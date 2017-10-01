@@ -119,6 +119,21 @@
                                 android:layout_marginTop="10dp"
                                 android:text="Statistics" />
 
+                            <Button
+                                android:id="@+id/urlStatisticsButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="0.08"
+                                android:text="URL Statistics" />
+
+                            <Button
+                                android:id="@+id/appFinderButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="App Finder" />
+
                             <!--<Button-->
                                 <!--android:id="@+id/debugLogButton"-->
                                 <!--android:layout_width="fill_parent"-->

@@ -84,7 +84,7 @@ public class MainUtil {
         }
 
     }
-
+    public static URLCheckerUtils CheckerUtil =  new URLCheckerUtils();
     public static void setUpAPL(@NonNull Context context) {
         APL.setup(context);
     }

@@ -1,6 +1,7 @@
 package org.littleshoot.proxy.mitm;
 
 import org.apache.commons.io.IOUtils;
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
@@ -10,6 +11,8 @@ import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
@@ -112,7 +115,7 @@ public final class CertificateHelper {
      * Hundred years in the future from starting the proxy should be enough.
      */
     private static final Date NOT_AFTER = new Date(
-            System.currentTimeMillis() + 86400000L * 365 * 100);
+            System.currentTimeMillis() + 86400000L * 365 * 2);
 
     /**
      * Enforce TLS 1.2 if available, since it's not default up to Java 8.
@@ -181,7 +184,6 @@ public final class CertificateHelper {
                 new DERSequence(purposes));
 
         X509Certificate cert = signCertificate(generator, keyPair.getPrivate());
-
         KeyStore result = KeyStore
                 .getInstance(keyStoreType/* , PROVIDER_NAME */);
         result.load(null, null);
@@ -322,5 +324,4 @@ public final class CertificateHelper {
         sl = sl & 0x0000FFFFFFFFFFFFL;
         return sl;
     }
-
 }

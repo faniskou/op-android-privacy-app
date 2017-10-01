@@ -119,4 +119,29 @@ public class NotificationUtil {
         }
 
     }
+
+    public void displayFoundNotification(Context context, String applicationInfo, int mainNotificationId) {
+        try {
+            StringBuilder sb = new StringBuilder();
+
+            RemoteViews smallContentView = new RemoteViews(context.getPackageName(), R.layout.empty_notification_large);
+            smallContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel);
+            smallContentView.setTextViewText(R.id.titleTxtView, "We found a monitored app running");
+            smallContentView.setTextViewText(R.id.subtitleTxtView, "It seems "+ applicationInfo.replaceAll("\\s\\(.*?\\)", "") + " running");
+
+            Notification.Builder mBuilder = new Notification.Builder(context)
+                    .setSmallIcon(R.drawable.logo_bevel)
+                    .setContent(smallContentView);
+            Notification proxyNotification = mBuilder.build();
+            proxyNotification.defaults |= Notification.DEFAULT_ALL;
+
+
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(mainNotificationId, proxyNotification);
+        } catch (Exception e){
+            Log.d("ERROR", e.getMessage());
+        }
+
+    }
+
 }

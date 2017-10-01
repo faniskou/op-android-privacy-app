@@ -3,28 +3,21 @@ package eu.operando.operandoapp.database.model;
 /**
  * Created by fanis on 1/1/2017.
  */
-public class UrlStatistic {
+public class UrlAppChecker {
+    public String app_name;
     public String domainurl;
     public int count;
-    public String modified;
-    public String sourceactivity;
-    public int hidden;
-    public String category;
-
-    public UrlStatistic(String domainurl,int count,String modified,int hidden,String sourceactivity,String category){
+    public int duration;
+    public UrlAppChecker(String app_name,String domainurl, int count, int secs){
+        this.app_name = app_name;
         this.domainurl = domainurl;
         this.count = count;
-        this.hidden = hidden;
-        this.modified = modified;
-        this.sourceactivity = sourceactivity;
-        this.category = category;
+        this.duration = duration;
     }
-    public UrlStatistic(){
+    public UrlAppChecker(){
+        this.app_name = null;
         this.domainurl = null;
         this.count = 0;
-        this.hidden = 0;
-        this.modified = null;
-        this.sourceactivity = null;
-        this.category = null;
+        this.duration = 0;
     }
 }

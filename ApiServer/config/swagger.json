@@ -1,0 +1,631 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a store server created to store data for the statistic operations of the operando application",
+        "version": "1.0.0",
+        "title": "Swagger server store",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost",
+    "basePath": "/v1",
+    "tags": [
+        {
+            "name": "sync",
+            "description": "sync for statistics to use them (store them with a key)"
+        },
+        {
+            "name": "appsgroup",
+            "description": "manage apps in groups to aply policies "
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/statistics/{key}": {
+            "get": {
+                "tags": [
+                    "sync"
+                ],
+                "summary": "Get all statistics based on a key",
+                "description": "",
+                "operationId": "getpolicy",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Statistics": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/StatisticPolicy"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "sync"
+                ],
+                "summary": "Add a new policy statistic",
+                "description": "",
+                "operationId": "addpolicy",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "policy statistic object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/StatisticPolicy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/statistics/{key}/{domainurl}": {
+            "get": {
+                "tags": [
+                    "sync"
+                ],
+                "summary": "Get one statistic for a domain and a key",
+                "description": "",
+                "operationId": "getpolicyurl",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "ID of policy to create",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domainurl",
+                        "in": "path",
+                        "description": "statistic domain",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "$ref": "#/definitions/StatisticPolicy"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key-domain not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "sync"
+                ],
+                "summary": "Update an existing statistic",
+                "description": "",
+                "operationId": "updatePeturl",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "ID of policy statistic",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domainurl",
+                        "in": "path",
+                        "description": "statistic domain",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "policy statistic object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/StatisticPolicy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/appsIdentity/groups": {
+            "get": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Get all app groups",
+                "description": "",
+                "operationId": "getgroups",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "$ref": "#/definitions/AppIdentityGroups"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key not found"
+                    }
+                }
+            }
+        },
+        "/appsIdentity/{group}": {
+            "get": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Get all apps identities of a group",
+                "description": "",
+                "operationId": "getgroup",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Group of apps",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "AppIdentities": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/AppIdentityGroup"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Add a new policy or update one",
+                "description": "",
+                "operationId": "addgroup",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "ID of policy to create",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Pet object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AppIdentityGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/appsIdentity/{group}/{app}": {
+            "get": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Get a group app identity",
+                "description": "",
+                "operationId": "getgroupapp",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app",
+                        "in": "path",
+                        "description": "app of policy",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "AppIdentities": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/AppIdentityGroup"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key not found"
+                    }
+                }
+            }
+        },
+        "/appsIdentity/{group}/{app}/{domainurl}": {
+            "get": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Get an app identity url",
+                "description": "",
+                "operationId": "getgroupappdomain",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app",
+                        "in": "path",
+                        "description": "app of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domainurl",
+                        "in": "path",
+                        "description": "domain of policy",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesful operation",
+                        "schema": {
+                            "$ref": "#/definitions/AppIdentityGroup"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Key not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Add a new policy",
+                "description": "",
+                "operationId": "addgroupapp",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app",
+                        "in": "path",
+                        "description": "app of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domainurl",
+                        "in": "path",
+                        "description": "domain of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Pet object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AppIdentityGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "appsgroup"
+                ],
+                "summary": "Update an existing app identity domain",
+                "description": "",
+                "operationId": "updateGroupdomain",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "ID of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app",
+                        "in": "path",
+                        "description": "app of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domainurl",
+                        "in": "path",
+                        "description": "domain of policy",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Pet object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AppIdentityGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "App identity url not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "StatisticPolicy": {
+            "type": "object",
+            "required": [
+                "name",
+                "domainurl",
+                "count"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "policyA"
+                },
+                "domainurl": {
+                    "type": "string",
+                    "example": "www.enikos.gr"
+                },
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 2
+                },
+                "modified": {
+                    "type": "string",
+                    "example": "2001.07.04 AD at 12:08:56 PDT"
+                },
+                "sourceactivity": {
+                    "type": "string",
+                    "example": "operando"
+                },
+                "hidden": {
+                    "type": "string",
+                    "example": "no"
+                },
+                "category": {
+                    "type": "string",
+                    "example": "news"
+                },
+                "extrainfo": {
+                    "type": "string",
+                    "example": "{'for initialatation':'yes'}"
+                }
+            }
+        },
+        "AppIdentityGroup": {
+            "type": "object",
+            "required": [
+                "name",
+                "app_name",
+                "count"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "initialgroup"
+                },
+                "domainurl": {
+                    "type": "string",
+                    "example": "www.enikos.gr"
+                },
+                "app_name": {
+                    "type": "string",
+                    "example": "ClashOfClanshGame"
+                },
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 2
+                },
+                "duration": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 21
+                }
+            }
+        },
+        "AppIdentityGroups": {
+            "type": "object",
+            "properties": {
+                "apps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "initialgroup"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

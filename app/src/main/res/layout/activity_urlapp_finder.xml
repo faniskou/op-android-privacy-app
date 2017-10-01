@@ -1,33 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="eu.operando.operandoapp.statistics.URLAppFinderActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <include layout="@layout/main_toolbar"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeAppCompatLight.AppBarOverlay">
+        android:layout_height="59dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="196dp"
+            android:layout_height="55dp"
+            android:imeOptions="actionSearch"
+            android:layout_weight="0.56" />
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_weight="0.72"
+            android:background="?android:attr/windowBackground"
+            app:srcCompat="@android:drawable/ic_menu_search" />
+
+        <ImageButton
+            android:id="@+id/recButton"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_weight="0.72"
+            android:background="?android:attr/windowBackground"
+            app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
+        <ImageButton
+            android:id="@+id/recordingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:background="?android:attr/windowBackground"
+            android:visibility="gone"
+            app:srcCompat="@android:drawable/presence_audio_busy" />
+
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.56"
+            android:backgroundTint="@color/common_action_bar_splitter"
+            app:srcCompat="@android:drawable/stat_notify_sync" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clipToPadding="true"
+        android:background="@xml/shadow_box"
+        android:visibility="gone"
+        android:id="@+id/myTableFatherLayout"
+        android:fillViewport="false">
+
+
+        <LinearLayout
+            android:id="@+id/myTableLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeAppCompatLight.PopupOverlay" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
-    </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
 
-    <include layout="@layout/content_urlapp_finder" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <LinearLayout
+            android:id="@+id/myTableAppLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

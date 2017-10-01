@@ -1,14 +1,33 @@
 package eu.operando.operandoapp.database.model;
 
 /**
- * Created by periklismaravelias on 31/05/16.
+ * Created by fanis on 1/1/2017.
  */
 public class UrlStatistic {
-    public String info;
-    public String exfiltrated;
+    public String domainurl;
+    public int count;
+    public String modified;
+    public String sourceactivity;
+    public int hidden;
+    public String category;
+    public String extrainfo;
 
-    public UrlStatistic(String info, String exfiltrated){
-        this.info = info.replaceAll("\\(.+?\\)", "");
-        this.exfiltrated = exfiltrated;
+    public UrlStatistic(String domainurl,int count,String modified,int hidden,String sourceactivity,String category){
+        this.domainurl = domainurl;
+        this.count = count;
+        this.hidden = hidden;
+        this.modified = modified;
+        this.sourceactivity = sourceactivity;
+        this.category = category;
+        this.extrainfo = extrainfo;
+    }
+    public UrlStatistic(){
+        this.domainurl = null;
+        this.count = 0;
+        this.hidden = 0;
+        this.modified = null;
+        this.sourceactivity = null;
+        this.category = null;
+        this.extrainfo = null;
     }
 }

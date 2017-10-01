@@ -12,128 +12,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_2sdp">
-
-        <LinearLayout
-            android:layout_width="@dimen/_130sdp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textDomain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Domain URL" />
-            <TextView
-                android:id="@+id/textCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Domain Category" />
-        </LinearLayout>
+        android:padding="@dimen/_2sdp"
+        android:weightSum="1">
 
         <TextView
-            android:id="@+id/textCount"
-            android:layout_width="@dimen/_40sdp"
+            android:id="@+id/textapp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Count" />
-
-        <TextView
-            android:id="@+id/textModified"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="wrap_content"
-            android:text="Modified" />
+            android:layout_weight="0.88"
+            android:text="T" />
 
         <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="40dp"
+            android:id="@+id/toggleButtonF"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:textOn="^"
-            android:textOff="V"
-            android:text=""/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_2sdp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/Categorize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="@dimen/_34sdp"
-                    android:minWidth="@dimen/_34sdp"
-                    android:text="Categorize" />
-
-                <Button
-                    android:id="@+id/UnBlock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="@dimen/_34sdp"
-                    android:minWidth="@dimen/_34sdp"
-                    android:text="UnBlock" />
-
-                <Button
-                    android:id="@+id/Block"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="@dimen/_34sdp"
-                    android:minWidth="@dimen/_34sdp"
-                    android:text="Block" />
-
-                <Button
-                    android:id="@+id/Hide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="@dimen/_34sdp"
-                    android:minWidth="@dimen/_34sdp"
-                    android:text="Hide" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/setCategoryLayout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:id="@+id/EditCategory"
-                    android:text="EditCategory" />
-                <Button
-                    android:id="@+id/SetCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
-                    android:minHeight="@dimen/_34sdp"
-                    android:minWidth="@dimen/_34sdp"
-                    android:text="SET" />
-            </LinearLayout>
-        </LinearLayout>
+            android:text=""
+            android:textOff="not monitored"
+            android:textOn="monitored" />
 
     </LinearLayout>
 

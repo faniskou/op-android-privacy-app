@@ -97,13 +97,16 @@ import eu.operando.operandoapp.database.model.PendingNotification;
 import eu.operando.operandoapp.filters.DownloadTask;
 import eu.operando.operandoapp.filters.domain.DomainFiltersActivity;
 import eu.operando.operandoapp.filters.domain.DomainManagerActivity;
-import eu.operando.operandoapp.filters.domain.PermissionsPerDomainActivity;
+/// missing code from git
+///import eu.operando.operandoapp.filters.domain.PermissionsPerDomainActivity;
 import eu.operando.operandoapp.filters.response.ResponseFiltersActivity;
 import eu.operando.operandoapp.service.ProxyService;
 import eu.operando.operandoapp.service.StatisticsActivity;
 import eu.operando.operandoapp.settings.SettingActivity;
 import eu.operando.operandoapp.settings.Settings;
 import eu.operando.operandoapp.settings.ThemeStyle;
+import eu.operando.operandoapp.statistics.StatisticsListActivity;
+import eu.operando.operandoapp.statistics.URLAppFinderActivity;
 import eu.operando.operandoapp.util.CertificateUtil;
 import eu.operando.operandoapp.util.Logger;
 import eu.operando.operandoapp.util.MainUtil;
@@ -141,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     private Button trustedAccessPointsButton = null;
     private Button updateButton = null;
     private Button statisticsButton = null;
+    private Button urlStatisticsButton = null;
+    private Button URLAppFinderActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mainContext.getContext(), PermissionsPerDomainActivity.class);
+                Intent i = new Intent(mainContext.getContext(), DomainManagerActivity.class);
                 startActivity(i);
             }
         });
@@ -359,6 +364,22 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             }
         });
 
+        urlStatisticsButton = (Button) findViewById(R.id.urlStatisticsButton);
+        urlStatisticsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mainContext.getContext(), StatisticsListActivity.class);
+                startActivity(i);
+            }
+        });
+        URLAppFinderActivity= (Button) findViewById(R.id.appFinderButton);
+        URLAppFinderActivity.setOnClickListener(new View.OnClickListener() {
+             @Override
+               public void onClick(View v) {
+                 Intent i = new Intent(mainContext.getContext(), URLAppFinderActivity.class);
+                 startActivity(i);
+             }
+        });
         //endregion
 
         //region Action Bar

@@ -33,6 +33,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.common.net.InternetDomainName;
+
 import org.apache.commons.lang3.StringUtils;
 import org.littleshoot.proxy.ActivityTrackerAdapter;
 import org.littleshoot.proxy.FlowContext;
@@ -52,6 +54,8 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.SocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
@@ -100,6 +104,8 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.EventExecutorGroup;
 
+import eu.operando.operandoapp.database.model.UrlStatistic;
+
 /**
  * Created by nikos on 8/4/2016.
  */
@@ -117,6 +123,18 @@ public class ProxyService extends Service {
 
     private String[] locationInfo, contactsInfo, macAdresses;
     private String IMEI, phoneNumber, subscriberID, carrierName, androidID;
+
+    //fanisadd
+    public static String getDomainName(String url) {
+        String domain = "";
+        try {
+            URI uri = new URI(url);
+            domain = uri.getHost();
+        } catch (URISyntaxException ex) {
+            return "";
+        }
+        return domain.startsWith("www.") ? domain.substring(4) : domain;
+    }
 
     @Override
     public void onCreate() {
@@ -158,6 +176,8 @@ public class ProxyService extends Service {
         return START_STICKY;
     }
 
+
+    //140140 ελενχος για φιλτρα
     private HttpFiltersSource getFiltersSource() {
         return new HttpFiltersSourceAdapter() {
             @Override
@@ -167,7 +187,6 @@ public class ProxyService extends Service {
                     public HttpObject serverToProxyResponse(HttpObject httpObject) {
                         //check for proxy running
                         if (MainUtil.isProxyPaused(mainContext)) return httpObject;
-
                         if (httpObject instanceof HttpMessage) {
                             HttpMessage response = (HttpMessage) httpObject;
                             response.headers().set(HttpHeaderNames.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
@@ -203,10 +222,12 @@ public class ProxyService extends Service {
                         return httpObject;
                     }
 
+                    // 140140 Εδώ ελενχεται η καθε διευθυνση
+                    // προτεινεται να  προσθεσουμε μια καταγραφη
                     @Override
                     public HttpResponse clientToProxyRequest(HttpObject httpObject) {
                         //check for proxy running
-                        if (MainUtil.isProxyPaused(mainContext)){
+                        if (MainUtil.isProxyPaused(mainContext)) {
                             return null;
                         }
 
@@ -215,19 +236,17 @@ public class ProxyService extends Service {
                         String bssid = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getBSSID();
                         boolean trusted = false;
                         TrustedAccessPoint curr_tap = new TrustedAccessPoint(ssid, bssid);
-                        for (TrustedAccessPoint tap : db.getAllTrustedAccessPoints()){
-                            if (curr_tap.isEqual(tap)){
+                        for (TrustedAccessPoint tap : db.getAllTrustedAccessPoints()) {
+                            if (curr_tap.isEqual(tap)) {
                                 trusted = true;
                             }
                         }
-                        if (!trusted){
+                        if (!trusted) {
                             return getUntrustedGatewayResponse();
                         }
 
-                        //check for blocked url
-
-
                         //check for exfiltration
+
                         requestFilterUtil = new RequestFilterUtil(getApplicationContext());
                         locationInfo = requestFilterUtil.getLocationInfo();
                         contactsInfo = requestFilterUtil.getContactsInfo();
@@ -237,23 +256,44 @@ public class ProxyService extends Service {
                         carrierName = requestFilterUtil.getCarrierName();
                         androidID = requestFilterUtil.getAndroidID();
                         macAdresses = requestFilterUtil.getMacAddresses();
+//if httpObject
+                        //                 if (httpObject.uri != null) {
+
+                        //              }
+                        //   if (httpObject.uri != null) {
 
                         if (httpObject instanceof HttpMessage) {
+
                             HttpMessage request = (HttpMessage) httpObject;
+
                             if (request.headers().contains(CustomHeaderField)) {
                                 applicationInfo = request.headers().get(CustomHeaderField);
                                 request.headers().remove(CustomHeaderField);
                             }
+
                             if (request.headers().contains(HttpHeaderNames.ACCEPT_ENCODING)) {
                                 request.headers().remove(HttpHeaderNames.ACCEPT_ENCODING);
                             }
+                            Log.d("checkingTheUrl", ((HttpRequest) request).uri());
+                            if (MainUtil.CheckerUtil.isRecording()) {
+                                MainUtil.CheckerUtil.addURLAppChecker(((HttpRequest) request).uri());
+                            }
+                            MainUtil.CheckerUtil.checkURLAppChecker(getBaseContext(),((HttpRequest) request).uri());
+
                             if (!ProxyUtils.isCONNECT(request) && request.headers().contains(HttpHeaderNames.HOST)) {
-                                String hostName = ((HttpRequest)request).uri(); //request.headers().get(HttpHeaderNames.HOST).toLowerCase();
+                                String hostName = ((HttpRequest) request).uri(); //request.headers().get(HttpHeaderNames.HOST).toLowerCase();
                                 if (db.isDomainBlocked(hostName))
                                     return getBlockedHostResponse(hostName);
+                                //fanisadd
+                                if (!hostName.startsWith("/")) {
+                                    String newdomain = getDomainName(hostName);
+                                    if (newdomain != "") {
+                                        db.createUrlStatistic(newdomain);
+                                    }
+                                }
+
                             }
                         }
-
                         String requestURI;
                         Set<RequestFilterUtil.FilterType> exfiltrated = new HashSet<>();
 
@@ -289,7 +329,7 @@ public class ProxyService extends Service {
                             if (requestURI.contains(IMEI) && !IMEI.equals("")) {
                                 exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
                             }
-                            if (requestURI.contains(phoneNumber) && !phoneNumber.equals("")){
+                            if (requestURI.contains(phoneNumber) && !phoneNumber.equals("")) {
                                 exfiltrated.add(RequestFilterUtil.FilterType.PHONENUMBER);
                             }
                             if (requestURI.contains(subscriberID) && !subscriberID.equals("")) {
@@ -331,7 +371,7 @@ public class ProxyService extends Service {
                                 if (contentStr.contains(IMEI) && !IMEI.equals("")) {
                                     exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
                                 }
-                                if (contentStr.contains(phoneNumber) && !phoneNumber.equals("")){
+                                if (contentStr.contains(phoneNumber) && !phoneNumber.equals("")) {
                                     exfiltrated.add(RequestFilterUtil.FilterType.PHONENUMBER);
                                 }
                                 if (contentStr.contains(subscriberID) && !subscriberID.equals("")) {
@@ -411,7 +451,7 @@ public class ProxyService extends Service {
 
     //region Responses
 
-    private HttpResponse getPendingResponse(){
+    private HttpResponse getPendingResponse() {
         String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
                 + "<html><head>\n"
                 + "<title>" + "Pending Notification" + "</title>\n"
@@ -428,7 +468,7 @@ public class ProxyService extends Service {
         return response;
     }
 
-    private HttpResponse getAwaitingResponse(){
+    private HttpResponse getAwaitingResponse() {
         String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
                 + "<html><head>\n"
                 + "<title>" + "Awaiting Response" + "</title>\n"
