@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="eu.operando.operandoapp.wifi.TrustedAccessPointsActivity">
 
-    <include layout="@layout/main_toolbar"/>
+    <include layout="@layout/main_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -52,8 +52,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/imageView3">
-            </TableLayout>
+                android:layout_below="@+id/imageView3"></TableLayout>
 
         </ScrollView>
 

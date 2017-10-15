@@ -61,7 +61,6 @@ import eu.operando.operandoapp.database.model.TrustedAccessPoint;
 import eu.operando.operandoapp.database.model.UrlAppChecker;
 import eu.operando.operandoapp.database.model.UrlStatistic;
 import eu.operando.operandoapp.statistics.URLAppFinderActivity;
-import eu.operando.operandoapp.util.RequestFilterUtil;
 
 /**
  * Created by nikos on 11/5/2016.
@@ -978,50 +977,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void updateStatistics(final Set<RequestFilterUtil.FilterType> exfiltrated) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (RequestFilterUtil.FilterType filter : exfiltrated) {
-                    String column = "";
-                    switch (RequestFilterUtil.getDescriptionForFilterType(filter)) {
-                        case "Contacts Data":
-                            column = KEY_CONTACTSINFO;
-                            break;
-                        case "IMEI":
-                            column = KEY_IMEI;
-                            break;
-                        case "Phone Number":
-                            column = KEY_PHONENUMBER;
-                            break;
-                        case "Device Id":
-                            column = KEY_IMSI;
-                            break;
-                        case "Carrier Name":
-                            column = KEY_CARRIERNAME;
-                            break;
-                        case "Location Information":
-                            column = KEY_LOCATION;
-                            break;
-                        case "Android Id":
-                            column = KEY_ANDROIDID;
-                            break;
-                        case "Mac Addresses":
-                            column = KEY_MACADDRESSES;
-                            break;
-                    }
-                    if (!column.equals("")) {
-                        SQLiteDatabase db = DatabaseHelper.this.getWritableDatabase();
-                        try {
-                            db.execSQL("UPDATE " + TABLE_STATISTICS + " SET " + column + " = " + column + "+1 WHERE " + KEY_ID + "=1");
-                        } catch (SQLException sqle) {
-                            sqle.getMessage();
-                        }
-                    }
-                }
-            }
-        }).start();
-    }
+//    public void updateStatistics(final Set<RequestFilterUtil.FilterType> exfiltrated) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (RequestFilterUtil.FilterType filter : exfiltrated) {
+//                    String column = "";
+//                    switch (RequestFilterUtil.getDescriptionForFilterType(filter)) {
+//                        case "Contacts Data":
+//                            column = KEY_CONTACTSINFO;
+//                            break;
+//                        case "IMEI":
+//                            column = KEY_IMEI;
+//                            break;
+//                        case "Phone Number":
+//                            column = KEY_PHONENUMBER;
+//                            break;
+//                        case "Device Id":
+//                            column = KEY_IMSI;
+//                            break;
+//                        case "Carrier Name":
+//                            column = KEY_CARRIERNAME;
+//                            break;
+//                        case "Location Information":
+//                            column = KEY_LOCATION;
+//                            break;
+//                        case "Android Id":
+//                            column = KEY_ANDROIDID;
+//                            break;
+//                        case "Mac Addresses":
+//                            column = KEY_MACADDRESSES;
+//                            break;
+//                    }
+//                    if (!column.equals("")) {
+//                        SQLiteDatabase db = DatabaseHelper.this.getWritableDatabase();
+//                        try {
+//                            db.execSQL("UPDATE " + TABLE_STATISTICS + " SET " + column + " = " + column + "+1 WHERE " + KEY_ID + "=1");
+//                        } catch (SQLException sqle) {
+//                            sqle.getMessage();
+//                        }
+//                    }
+//                }
+//            }
+//        }).start();
+//    }
 
     //endregion
 

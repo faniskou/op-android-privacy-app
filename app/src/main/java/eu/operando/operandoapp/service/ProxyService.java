@@ -21,6 +21,7 @@
 
 package eu.operando.operandoapp.service;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -79,7 +80,6 @@ import eu.operando.operandoapp.database.model.ResponseFilter;
 import eu.operando.operandoapp.database.model.TrustedAccessPoint;
 import eu.operando.operandoapp.util.MainUtil;
 import eu.operando.operandoapp.util.ProcExplorer;
-import eu.operando.operandoapp.util.RequestFilterUtil;
 import eu.operando.operandoapp.wifi.model.WiFiDetail;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -118,11 +118,10 @@ public class ProxyService extends Service {
     private MainContext mainContext = MainContext.INSTANCE;
     private ProcExplorer procExplorer;
     private DatabaseHelper db;
-    private RequestFilterUtil requestFilterUtil;
     private String applicationInfo;
 
     private String[] locationInfo, contactsInfo, macAdresses;
-    private String IMEI, phoneNumber, subscriberID, carrierName, androidID;
+    private String IMEI, subscriberID, carrierName, androidID;
 
     //fanisadd
     public static String getDomainName(String url) {
@@ -232,8 +231,8 @@ public class ProxyService extends Service {
                         }
 
                         //check for trusted access point
-                        String ssid = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getSSID();
-                        String bssid = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getBSSID();
+                        @SuppressLint("WifiManagerLeak") String ssid = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getSSID();
+                        @SuppressLint("WifiManagerLeak") String bssid = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getBSSID();
                         boolean trusted = false;
                         TrustedAccessPoint curr_tap = new TrustedAccessPoint(ssid, bssid);
                         for (TrustedAccessPoint tap : db.getAllTrustedAccessPoints()) {
@@ -244,23 +243,6 @@ public class ProxyService extends Service {
                         if (!trusted) {
                             return getUntrustedGatewayResponse();
                         }
-
-                        //check for exfiltration
-
-                        requestFilterUtil = new RequestFilterUtil(getApplicationContext());
-                        locationInfo = requestFilterUtil.getLocationInfo();
-                        contactsInfo = requestFilterUtil.getContactsInfo();
-                        IMEI = requestFilterUtil.getIMEI();
-                        phoneNumber = requestFilterUtil.getPhoneNumber();
-                        subscriberID = requestFilterUtil.getSubscriberID();
-                        carrierName = requestFilterUtil.getCarrierName();
-                        androidID = requestFilterUtil.getAndroidID();
-                        macAdresses = requestFilterUtil.getMacAddresses();
-//if httpObject
-                        //                 if (httpObject.uri != null) {
-
-                        //              }
-                        //   if (httpObject.uri != null) {
 
                         if (httpObject instanceof HttpMessage) {
 
@@ -295,7 +277,6 @@ public class ProxyService extends Service {
                             }
                         }
                         String requestURI;
-                        Set<RequestFilterUtil.FilterType> exfiltrated = new HashSet<>();
 
                         if (httpObject instanceof HttpRequest) {
                             HttpRequest request = (HttpRequest) httpObject;
@@ -305,84 +286,78 @@ public class ProxyService extends Service {
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
-                            if (locationInfo.length > 0) {
-                                //tolerate location miscalculation
-                                float latitude = Float.parseFloat(locationInfo[0]);
-                                float longitude = Float.parseFloat(locationInfo[1]);
-                                Matcher m = Pattern.compile("\\d+\\.\\d+").matcher(requestURI);
-                                List<String> floats_in_uri = new ArrayList();
-                                while (m.find()) {
-                                    floats_in_uri.add(m.group());
-                                }
-                                for (String s : floats_in_uri) {
-                                    if (Math.abs(Float.parseFloat(s) - latitude) < 0.5 || Math.abs(Float.parseFloat(s) - longitude) < 0.1) {
-                                        exfiltrated.add(RequestFilterUtil.FilterType.LOCATION);
-                                    }
-                                }
-                            }
-                            if (StringUtils.containsAny(requestURI, contactsInfo)) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.CONTACTS);
-                            }
-                            if (StringUtils.containsAny(requestURI, macAdresses)) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.MACADRESSES);
-                            }
-                            if (requestURI.contains(IMEI) && !IMEI.equals("")) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
-                            }
-                            if (requestURI.contains(phoneNumber) && !phoneNumber.equals("")) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.PHONENUMBER);
-                            }
-                            if (requestURI.contains(subscriberID) && !subscriberID.equals("")) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.IMSI);
-                            }
-                            if (requestURI.contains(carrierName) && !carrierName.equals("")) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.CARRIERNAME);
-                            }
-                            if (requestURI.contains(androidID) && !androidID.equals("")) {
-                                exfiltrated.add(RequestFilterUtil.FilterType.ANDROIDID);
-                            }
+//                            if (locationInfo.length > 0) {
+//                                //tolerate location miscalculation
+//                                float latitude = Float.parseFloat(locationInfo[0]);
+//                                float longitude = Float.parseFloat(locationInfo[1]);
+//                                Matcher m = Pattern.compile("\\d+\\.\\d+").matcher(requestURI);
+//                                List<String> floats_in_uri = new ArrayList();
+//                                while (m.find()) {
+//                                    floats_in_uri.add(m.group());
+//                                }
+//                                for (String s : floats_in_uri) {
+//                                    if (Math.abs(Float.parseFloat(s) - latitude) < 0.5 || Math.abs(Float.parseFloat(s) - longitude) < 0.1) {
+//                                        exfiltrated.add(RequestFilterUtil.FilterType.LOCATION);
+//                                    }
+//                                }
+//                            }
+//                            if (StringUtils.containsAny(requestURI, contactsInfo)) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.CONTACTS);
+//                            }
+//                            if (StringUtils.containsAny(requestURI, macAdresses)) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.MACADRESSES);
+//                            }
+//                            if (requestURI.contains(IMEI) && !IMEI.equals("")) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
+//                            }
+//                            if (requestURI.contains(subscriberID) && !subscriberID.equals("")) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.IMSI);
+//                            }
+//                            if (requestURI.contains(carrierName) && !carrierName.equals("")) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.CARRIERNAME);
+//                            }
+//                            if (requestURI.contains(androidID) && !androidID.equals("")) {
+//                                exfiltrated.add(RequestFilterUtil.FilterType.ANDROIDID);
+//                            }
                         }
                         try {
                             Method content = httpObject.getClass().getMethod("content");
                             if (content != null) {
                                 ByteBuf buf = (ByteBuf) content.invoke(httpObject);
                                 String contentStr = buf.toString(Charset.forName("UTF-8"));
-                                if (locationInfo.length > 0) {
-                                    //tolerate location miscalculation
-                                    float latitude = Float.parseFloat(locationInfo[0]);
-                                    float longitude = Float.parseFloat(locationInfo[1]);
-                                    Matcher m = Pattern.compile("\\d+\\.\\d+").matcher(contentStr);
-                                    List<String> floats_in_uri = new ArrayList();
-                                    while (m.find()) {
-                                        floats_in_uri.add(m.group());
-                                    }
-                                    for (String s : floats_in_uri) {
-                                        if (Math.abs(Float.parseFloat(s) - latitude) < 0.5 || Math.abs(Float.parseFloat(s) - longitude) < 0.1) {
-                                            exfiltrated.add(RequestFilterUtil.FilterType.LOCATION);
-                                        }
-                                    }
-                                }
-                                if (StringUtils.containsAny(contentStr, contactsInfo)) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.CONTACTS);
-                                }
-                                if (StringUtils.containsAny(contentStr, macAdresses)) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.MACADRESSES);
-                                }
-                                if (contentStr.contains(IMEI) && !IMEI.equals("")) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
-                                }
-                                if (contentStr.contains(phoneNumber) && !phoneNumber.equals("")) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.PHONENUMBER);
-                                }
-                                if (contentStr.contains(subscriberID) && !subscriberID.equals("")) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.IMSI);
-                                }
-                                if (contentStr.contains(carrierName) && !carrierName.equals("")) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.CARRIERNAME);
-                                }
-                                if (contentStr.contains(androidID) && !androidID.equals("")) {
-                                    exfiltrated.add(RequestFilterUtil.FilterType.ANDROIDID);
-                                }
+//                                if (locationInfo.length > 0) {
+//                                    //tolerate location miscalculation
+//                                    float latitude = Float.parseFloat(locationInfo[0]);
+//                                    float longitude = Float.parseFloat(locationInfo[1]);
+//                                    Matcher m = Pattern.compile("\\d+\\.\\d+").matcher(contentStr);
+//                                    List<String> floats_in_uri = new ArrayList();
+//                                    while (m.find()) {
+//                                        floats_in_uri.add(m.group());
+//                                    }
+//                                    for (String s : floats_in_uri) {
+//                                        if (Math.abs(Float.parseFloat(s) - latitude) < 0.5 || Math.abs(Float.parseFloat(s) - longitude) < 0.1) {
+//                                            exfiltrated.add(RequestFilterUtil.FilterType.LOCATION);
+//                                        }
+//                                    }
+//                                }
+//                                if (StringUtils.containsAny(contentStr, contactsInfo)) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.CONTACTS);
+//                                }
+//                                if (StringUtils.containsAny(contentStr, macAdresses)) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.MACADRESSES);
+//                                }
+//                                if (contentStr.contains(IMEI) && !IMEI.equals("")) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.IMEI);
+//                                }
+//                                if (contentStr.contains(subscriberID) && !subscriberID.equals("")) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.IMSI);
+//                                }
+//                                if (contentStr.contains(carrierName) && !carrierName.equals("")) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.CARRIERNAME);
+//                                }
+//                                if (contentStr.contains(androidID) && !androidID.equals("")) {
+//                                    exfiltrated.add(RequestFilterUtil.FilterType.ANDROIDID);
+//                                }
                             }
                         } catch (IndexOutOfBoundsException ex) {
                             ex.printStackTrace();
@@ -391,49 +366,49 @@ public class ProxyService extends Service {
                             //ignore
                         }
 
-                        //check exfiltrated list
-                        if (!exfiltrated.isEmpty()) {
-                            //retrieve all blocked and allowed domains
-                            List<BlockedDomain> blocked = db.getAllBlockedDomains();
-                            List<AllowedDomain> allowed = db.getAllAllowedDomains();
-                            //get application name from app info
-                            String appName = applicationInfo.replaceAll("\\(.+?\\)", "");
-                            //check blocked domains
-                            //if domain is stored as blocked, return a forbidden response
-                            for (BlockedDomain b_dmn : blocked) {
-                                if (b_dmn.info.equals(appName)) {
-                                    return getForbiddenRequestResponse(applicationInfo, exfiltrated);
-                                }
-                            }
-                            //if domain is stored as allowed, return null for actual response
-                            for (AllowedDomain a_dmn : allowed) {
-                                if (a_dmn.info.equals(appName)) {
-                                    return null;
-                                }
-                            }
-                            //get exfiltrated info to string array
-                            String[] exfiltrated_array = new String[exfiltrated.size()];
-                            int i = 0;
-                            for (RequestFilterUtil.FilterType filter_type : exfiltrated) {
-                                exfiltrated_array[i] = filter_type.name();
-                                i++;
-                            }
-                            //retrieve all pending notifications
-                            List<PendingNotification> pending = db.getAllPendingNotifications();
-                            for (PendingNotification pending_notification : pending) {
-                                //if pending notification includes specific app name and app permissions return response that a pending notification exists
-                                if (pending_notification.app_info.equals(applicationInfo)) {
-                                    return getPendingResponse();
-                                }
-                            }
-                            //if none pending notification exists, display a new notification
-                            int notificationId = mainContext.getNotificationId();
-                            mainContext.getNotificationUtil().displayExfiltratedNotification(getBaseContext(), applicationInfo, exfiltrated, notificationId);
-                            mainContext.setNotificationId(notificationId + 3);
-                            //and update statistics
-                            db.updateStatistics(exfiltrated);
-                            return getAwaitingResponse();
-                        }
+//                        //check exfiltrated list
+//                //        if (!exfiltrated.isEmpty()) {
+//                            //retrieve all blocked and allowed domains
+//                            List<BlockedDomain> blocked = db.getAllBlockedDomains();
+//                            List<AllowedDomain> allowed = db.getAllAllowedDomains();
+//                            //get application name from app info
+//                            String appName = applicationInfo.replaceAll("\\(.+?\\)", "");
+//                            //check blocked domains
+//                            //if domain is stored as blocked, return a forbidden response
+//                            for (BlockedDomain b_dmn : blocked) {
+//                                if (b_dmn.info.equals(appName)) {
+//                                    return getForbiddenRequestResponse(applicationInfo);
+//                                }
+//                            }
+//                            //if domain is stored as allowed, return null for actual response
+//                            for (AllowedDomain a_dmn : allowed) {
+//                                if (a_dmn.info.equals(appName)) {
+//                                    return null;
+//                                }
+//                            }
+//                            //get exfiltrated info to string array
+//                           // String[] exfiltrated_array = new String[exfiltrated.size()];
+//                           // int i = 0;
+//                           // for (RequestFilterUtil.FilterType filter_type : exfiltrated) {
+//                           //     exfiltrated_array[i] = filter_type.name();
+//                           //     i++;
+//                           // }
+//                            //retrieve all pending notifications
+//                            List<PendingNotification> pending = db.getAllPendingNotifications();
+//                            for (PendingNotification pending_notification : pending) {
+//                                //if pending notification includes specific app name and app permissions return response that a pending notification exists
+//                                if (pending_notification.app_info.equals(applicationInfo)) {
+//                                    return getPendingResponse();
+//                                }
+//                            }
+//                            //if none pending notification exists, display a new notification
+//                            int notificationId = mainContext.getNotificationId();
+//                            mainContext.getNotificationUtil().displayExfiltratedNotification(getBaseContext(), applicationInfo,null , notificationId);
+//                            mainContext.setNotificationId(notificationId + 3);
+//                            //and update statistics
+//                          //  db.updateStatistics(exfiltrated);
+//                            return getAwaitingResponse();
+//                        //}
                         return null;
                     }
                 };
@@ -520,12 +495,12 @@ public class ProxyService extends Service {
         return response;
     }
 
-    private HttpResponse getForbiddenRequestResponse(String applicationInfo, Set<RequestFilterUtil.FilterType> exfiltrated) {
+    private HttpResponse getForbiddenRequestResponse(String applicationInfo) {
         String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
                 + "<html><head>\n"
                 + "<title>" + "Forbidden" + "</title>\n"
                 + "</head><body>\n"
-                + "<h1>Request sent by: '" + applicationInfo + "',<br/> contains sensitive data: " + RequestFilterUtil.messageForMatchedFilters(exfiltrated) + "</h1>"
+                + "<h1>Request sent by: '" + applicationInfo + "',<br/> contains sensitive data: "  + "</h1>"
                 + "</body></html>\n";
         byte[] bytes = body.getBytes(Charset.forName("UTF-8"));
         ByteBuf content = Unpooled.copiedBuffer(bytes);

@@ -137,6 +137,11 @@ public class URLAppFinderActivity extends AppCompatActivity {
                          }
                      }
         );
+        final ImageButton b =(ImageButton) row.findViewById(R.id.uploadAppButton);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { sendDataToServer(urlApp); }
+        });
         final String s = urlApp;
         row.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +151,12 @@ public class URLAppFinderActivity extends AppCompatActivity {
         });
         return row;
     }
+
+    void sendDataToServer(String urlApp)
+    {
+
+    }
+
     void createlist(List<UrlAppChecker> clist ){
         ((ScrollView) findViewById(R.id.myTableFatherLayout)).setVisibility(View.VISIBLE);
         final LinearLayout table = (LinearLayout) findViewById(R.id.myTableLayout);

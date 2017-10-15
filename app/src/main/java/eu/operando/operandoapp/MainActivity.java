@@ -110,7 +110,6 @@ import eu.operando.operandoapp.statistics.URLAppFinderActivity;
 import eu.operando.operandoapp.util.CertificateUtil;
 import eu.operando.operandoapp.util.Logger;
 import eu.operando.operandoapp.util.MainUtil;
-import eu.operando.operandoapp.util.RequestFilterUtil;
 import eu.operando.operandoapp.wifi.AccessPointsActivity;
 import eu.operando.operandoapp.wifi.TrustedAccessPointsActivity;
 
@@ -197,28 +196,28 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("wifi_ap");
         tabSpec.setContent(R.id.WifiAndAccessPointsScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_home));
+        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_home, null));
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("response_domain_filters");
         tabSpec.setContent(R.id.ResponseAndDomainFiltersScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter));
+        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter, null));
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("pending_notifications");
         tabSpec.setContent(R.id.PendingNotificationsScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_pending_notification));
+        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_pending_notification, null));
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("logs");
         tabSpec.setContent(R.id.LogsScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_report));
+        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_report, null));
         tabHost.addTab(tabSpec);
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                switch (tabId){
+                switch (tabId) {
                     case "pending_notifications":
                         //region Load Tab3
                         ((TableLayout) ((LinearLayout) ((ScrollView) findViewById(R.id.PendingNotificationsScrollView)).getChildAt(0)).getChildAt(1)).removeAllViews();
@@ -232,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                         new AsyncTask() {
                             private ProgressDialog mProgress;
                             private List<String[]> apps;
+
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
@@ -245,8 +245,8 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                             @Override
                             protected Object doInBackground(Object[] params) {
                                 apps = new ArrayList();
-                                for (String[] app : getInstalledApps(false)){
-                                    apps.add(new String[] {app[0], GetDataForApp(Integer.parseInt(app[1]))});
+                                for (String[] app : getInstalledApps(false)) {
+                                    apps.add(new String[]{app[0], GetDataForApp(Integer.parseInt(app[1]))});
                                 }
                                 return null;
                             }
@@ -372,13 +372,13 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(i);
             }
         });
-        URLAppFinderActivity= (Button) findViewById(R.id.appFinderButton);
+        URLAppFinderActivity = (Button) findViewById(R.id.appFinderButton);
         URLAppFinderActivity.setOnClickListener(new View.OnClickListener() {
-             @Override
-               public void onClick(View v) {
-                 Intent i = new Intent(mainContext.getContext(), URLAppFinderActivity.class);
-                 startActivity(i);
-             }
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mainContext.getContext(), URLAppFinderActivity.class);
+                startActivity(i);
+            }
         });
         //endregion
 
@@ -404,15 +404,19 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             while ((line = br.readLine()) != null) {
                 content.append(line);
             }
-            if (content.toString().equals("1")){
+            if (content.toString().equals("1")) {
                 File f = new File(file.getCanonicalPath());
                 f.delete();
-                new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
+         //       new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.getMessage();
-        }finally{
-            try{br.close();}catch(Exception ex){ex.getMessage();}
+        } finally {
+            try {
+                br.close();
+            } catch (Exception ex) {
+                ex.getMessage();
+            }
         }
         //endregion
 
@@ -471,26 +475,30 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(settingsIntent);
                 return true;
             case R.id.apn_menu: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.action_apn);
-                builder.setPositiveButton(android.R.string.cancel, null);
-                builder.setNegativeButton("Open APN Settings", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent apnIntent = new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
-                        apnIntent.putExtra("sub_id", 1); //SubscriptionManager.NAME_SOURCE_SIM_SOURCE
-                        startActivity(apnIntent);
-                    }
-                });
-                String message = "In order to enable OperandoApp proxy while using wireless networks (e.g. 3G), you will need to modify the corresponding Access Point configuration for your provider. Please set the following values:\n\nProxy: 127.0.0.1\nPort: 8899";
-                builder.setMessage(message);
-                builder.create().show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle(R.string.action_apn);
+//                builder.setPositiveButton(android.R.string.cancel, null);
+//                builder.setNegativeButton("Open APN Settings", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        Intent apnIntent = new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
+//                        apnIntent.putExtra("sub_id", 1); //SubscriptionManager.NAME_SOURCE_SIM_SOURCE
+//                        startActivity(apnIntent);
+//                    }
+//                });
+//                String message = "In order to enable OperandoApp proxy while using wireless networks (e.g. 3G), you will need to modify the corresponding Access Point configuration for your provider. Please set the following values:\n\nProxy: 127.0.0.1\nPort: 8899";
+//                builder.setMessage(message);
+//                builder.create().show();
+//
+//                return true;
+                Toast.makeText(this, "Not implemented in this version please use wifi.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case R.id.help_menu: {
+                Toast.makeText(this, "You have selected HELP (To be added).", Toast.LENGTH_SHORT).show();
 
                 return true;
             }
-            case R.id.help_menu:
-                Toast.makeText(this, "You have selected HELP (To be added).", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.about_menu:
                 Intent aboutIntent = new Intent(mainContext.getContext(), AboutActivity.class);
                 startActivity(aboutIntent);
@@ -514,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             fab.setImageResource(android.R.drawable.ic_media_pause);
         MainUtil.startProxyService(mainContext);
         //when proxy starts, check for phone number
-        CheckPhoneNumber();
+        // CheckPhoneNumber();
     }
 
     private void installCert() throws RootCertificateException, GeneralSecurityException, OperatorCreationException, IOException {
@@ -649,8 +657,8 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         webView.setBackgroundColor(Color.TRANSPARENT); //TRANSPARENT
     }
 
-    private void CheckPhoneNumber(){
-        if (new RequestFilterUtil(MainActivity.this).getPhoneNumber().equals("")){
+    private void CheckPhoneNumber() {
+     //   if (new RequestFilterUtil(MainActivity.this).getPhoneNumber().equals("")) {
             try {
                 final EditText phoneInput = new EditText(MainActivity.this);
                 phoneInput.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -689,10 +697,10 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                             })
                             .show();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.d("ERROR", e.getMessage());
             }
-        }
+       // }
     }
 
     private List<String[]> getInstalledApps(boolean getSysPackages) {
@@ -706,35 +714,35 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 }
         );
         List<String[]> res = new ArrayList<>();
-        for(int i=0;i<packs.size();i++) {
+        for (int i = 0; i < packs.size(); i++) {
             PackageInfo p = packs.get(i);
             if ((!getSysPackages) && (p.versionName == null)) {
-                continue ;
+                continue;
             }
-            res.add(new String[] {p.applicationInfo.loadLabel(getPackageManager()).toString(), p.applicationInfo.uid + ""});
+            res.add(new String[]{p.applicationInfo.loadLabel(getPackageManager()).toString(), p.applicationInfo.uid + ""});
         }
         return res;
     }
 
-    private String GetDataForApp(int uid){
+    private String GetDataForApp(int uid) {
         String total;
-        try{
+        try {
             //round to 2 decimal places
             total = Math.round((TrafficStats.getUidTxBytes(uid) / (1024.0 * 1024.0)) * 100.0) / 100.0 + " MB / " + Math.round((TrafficStats.getUidRxBytes(uid) / (1024.0 * 1024.0)) * 100.0) / 100.0 + " MB";
-        } catch (Exception e){
+        } catch (Exception e) {
             total = "0 MB / 0 MB";
         }
         return total;
     }
 
-    private void LoadPendingNotificationsTab(){
+    private void LoadPendingNotificationsTab() {
         final String addAllowedSuccessful = "Added to Allowed Domains Successfully",
                 addAllowedUnsuccessfull = "This domain already exists in your allowed domain list",
                 addBlockedSuccessfull = "Added to Blocked Domains Successfully",
                 addBlockedUnsuccessfull = "This domain already exists in your blocked domain list";
 
-        try{
-            for (final PendingNotification pending_notification : new DatabaseHelper(this).getAllPendingNotifications()){
+        try {
+            for (final PendingNotification pending_notification : new DatabaseHelper(this).getAllPendingNotifications()) {
                 String info = pending_notification.app_info + " || " + pending_notification.permission + " || " + pending_notification.id;
                 Button b = new Button(this);
                 b.setText(info);
@@ -766,7 +774,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                                             }
                                             ((TableLayout) ((LinearLayout) ((ScrollView) findViewById(R.id.PendingNotificationsScrollView)).getChildAt(0)).getChildAt(1)).removeAllViews();
                                             LoadPendingNotificationsTab();
-                                            new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
+                                         //   new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
                                         }
                                     })
                                     .setNegativeButton("BLOCK", new DialogInterface.OnClickListener() {
@@ -786,7 +794,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                                             }
                                             ((TableLayout) ((LinearLayout) ((ScrollView) findViewById(R.id.PendingNotificationsScrollView)).getChildAt(0)).getChildAt(1)).removeAllViews();
                                             LoadPendingNotificationsTab();
-                                            new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
+                                     //       new DatabaseHelper(MainActivity.this).sendSettingsToServer(new RequestFilterUtil(MainActivity.this).getIMEI());
                                         }
                                     })
                                     .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -802,12 +810,12 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                     }
                 });
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.d("ERROR", e.getMessage());
         }
     }
 
-    private void DownloadInitialSettings(){
+    private void DownloadInitialSettings() {
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("firstTime", true) && haveNetworkConnection()) {
@@ -840,7 +848,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                                         if (hash >= 0)
                                             line = line.substring(0, hash);
                                         line = line.trim();
-                                        try{
+                                        try {
                                             String blockedDomain = line;
                                             if (blockedDomain.equals("local") || StringUtils.containsAny(blockedDomain, "localhost", "127.0.0.1", "broadcasthost"))
                                                 continue;
@@ -850,7 +858,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                                             domainFilter.setIsWildcard(false);
                                             new DatabaseHelper(MainActivity.this).createDomainFilter(domainFilter);
                                             count++;
-                                        } catch (Exception e){
+                                        } catch (Exception e) {
                                             Log.i("Error", "Invalid hosts file line: " + line);
                                         }
                                     }
@@ -894,7 +902,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                         Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }).execute();
-            }catch(MalformedURLException mue){
+            } catch (MalformedURLException mue) {
                 mue.getMessage();
             }
         } else if (!haveNetworkConnection()) {

@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Domain URL" />
+
             <TextView
                 android:id="@+id/textCategory"
                 android:layout_width="match_parent"
@@ -51,7 +52,7 @@
             android:checked="false"
             android:textOn="^"
             android:textOff="V"
-            android:text=""/>
+            android:text="" />
 
     </LinearLayout>
 
@@ -65,8 +66,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -116,6 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone">
+
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,6 +125,7 @@
                     android:focusableInTouchMode="true"
                     android:id="@+id/EditCategory"
                     android:text="EditCategory" />
+
                 <Button
                     android:id="@+id/SetCategory"
                     android:layout_width="wrap_content"

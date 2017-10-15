@@ -3,7 +3,7 @@
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="1000px"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/image"
@@ -13,11 +13,13 @@
         android:layout_marginRight="10dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false" />
-    <TextView android:id="@+id/titleTxtView"
+
+    <TextView
+        android:id="@+id/titleTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/image"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/subtitleTxtView"

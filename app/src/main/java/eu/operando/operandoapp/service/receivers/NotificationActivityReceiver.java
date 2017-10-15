@@ -16,7 +16,6 @@ import eu.operando.operandoapp.database.DatabaseHelper;
 import eu.operando.operandoapp.database.model.AllowedDomain;
 import eu.operando.operandoapp.database.model.BlockedDomain;
 import eu.operando.operandoapp.database.model.PendingNotification;
-import eu.operando.operandoapp.util.RequestFilterUtil;
 
 /**
  * Created by periklismaravelias on 31/05/16.
@@ -46,7 +45,7 @@ public class NotificationActivityReceiver extends BroadcastReceiver {
                     int id = choiceBundle.getInt("notificationId");
                     nm.cancel(id);
                     db.removePendingNotification(id);
-                    db.sendSettingsToServer(new RequestFilterUtil(context).getIMEI());
+                   // db.sendSettingsToServer(new RequestFilterUtil(context).getIMEI());
                 } else if (choice.equals("block")){
                     boolean add = true;
                     for (String s : choiceBundle.getStringArray("exfiltrated")) {
@@ -57,7 +56,7 @@ public class NotificationActivityReceiver extends BroadcastReceiver {
                     int id = choiceBundle.getInt("notificationId");
                     nm.cancel(id);
                     db.removePendingNotification(id);
-                    db.sendSettingsToServer(new RequestFilterUtil(context).getIMEI());
+                 //   db.sendSettingsToServer(new RequestFilterUtil(context).getIMEI());
                 }
             }
 

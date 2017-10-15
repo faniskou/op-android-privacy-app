@@ -133,11 +133,11 @@ public enum MainContext {
         NotificationId = 1000;
     }
 
-    public int getNotificationId(){
+    public int getNotificationId() {
         return NotificationId;
     }
 
-    public void setNotificationId(int NotificationId){
+    public void setNotificationId(int NotificationId) {
         this.NotificationId = NotificationId;
     }
 }
