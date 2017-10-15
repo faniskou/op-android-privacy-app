@@ -33,3 +33,4 @@ local.properties
 *.swp
 
 app/src/main/java/eu/operando/operandoapp/filters/domain/PermissionsPerDomainActivity.java
+/build
