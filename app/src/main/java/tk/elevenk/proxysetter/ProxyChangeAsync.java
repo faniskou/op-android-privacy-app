@@ -35,43 +35,43 @@ import android.widget.Toast;
  */
 public class ProxyChangeAsync extends AsyncTask<Object, String, Void> {
 
-	private Context context;
-	private ProxyChangeExecutor executor;
+    private Context context;
+    private ProxyChangeExecutor executor;
 
-	private static final String TAG = "ProxySetterApp";
+    private static final String TAG = "ProxySetterApp";
 
-	public ProxyChangeAsync(Context context) {
-		this.context = context;
-	}
+    public ProxyChangeAsync(Context context) {
+        this.context = context;
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		// init executor and register it to receive wifi state change broadcasts
-		executor = new ProxyChangeExecutor(this);
-		context.registerReceiver(executor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-	}
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        // init executor and register it to receive wifi state change broadcasts
+        executor = new ProxyChangeExecutor(this);
+        context.registerReceiver(executor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
 
-	@Override
-	protected Void doInBackground(Object... params) {
+    @Override
+    protected Void doInBackground(Object... params) {
 
-		// Looper is needed to handle broadcast messages
-		try {
-			Looper.prepare();
-		} catch (Exception e) {
-			Log.e(TAG, "Error starting looper on thread", e);
-		}
+        // Looper is needed to handle broadcast messages
+        try {
+            Looper.prepare();
+        } catch (Exception e) {
+            Log.e(TAG, "Error starting looper on thread", e);
+        }
 
-		executor.executeChange((Intent) params[0]);
-		return null;
-	}
+        executor.executeChange((Intent) params[0]);
+        return null;
+    }
 
 
-	@Override
-	public void onProgressUpdate(String... values) {
-		super.onProgressUpdate(values);
-		final String msg = values[0];
-        Handler handler =  new Handler(context.getMainLooper());
+    @Override
+    public void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        final String msg = values[0];
+        Handler handler = new Handler(context.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -79,15 +79,15 @@ public class ProxyChangeAsync extends AsyncTask<Object, String, Void> {
         });
 
         Log.e(TAG, msg);
-	}
+    }
 
     @Override
     protected void onCancelled(Void aVoid) {
         context.unregisterReceiver(executor);
     }
 
-	@Override
-	protected void onPostExecute(Void aVoid) {
-		context.unregisterReceiver(executor);
-	}
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        context.unregisterReceiver(executor);
+    }
 }

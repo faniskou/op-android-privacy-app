@@ -46,7 +46,7 @@ public class StatisticsListActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private Switch s;
     private TextView t;
-    private ImageButton r;
+    private ImageButton r,rsync,rsyncdown;
     private int IsInSearchMode;
     private connectWithServer a;
     @Override
@@ -67,13 +67,15 @@ public class StatisticsListActivity extends AppCompatActivity {
 
         //Check server connections
         a = new  connectWithServer(this);
-        a.TestGetSync();
+
 
 
 
         s = (Switch) findViewById(R.id.Hidden);
         t = (TextView) findViewById(R.id.SearchText);
         r = (ImageButton) findViewById(R.id.refreshButton);
+        rsync = (ImageButton) findViewById(R.id.syncButton);
+        rsyncdown = (ImageButton) findViewById(R.id.syncDownButton);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 createlist();
@@ -85,17 +87,26 @@ public class StatisticsListActivity extends AppCompatActivity {
 
             }
         });
+        rsync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { syncData();
+
+            }
+        });
+        rsyncdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { syncDataDown();
+
+            }
+        });
         t.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //here is your code
-
 
             }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -127,8 +138,12 @@ public class StatisticsListActivity extends AppCompatActivity {
             table.addView(createRow(i));
         }
     }
-
-
+    void syncData(){
+        a.syncStatistics(urlStatistics);
+    }
+    void syncDataDown(){
+        a.getSyncStatistics(db);
+    }
     private LinearLayout createRow(int i) {
         final LinearLayout row = (LinearLayout) LayoutInflater.from(StatisticsListActivity.this).inflate(R.layout.content_statistics_list, null);
         ((TextView) row.findViewById(R.id.textDomain)).setText(urlStatistics.get(i).domainurl);

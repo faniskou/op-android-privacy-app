@@ -7,50 +7,69 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="eu.operando.operandoapp.statistics.StatisticsListActivity">
-    <include layout="@layout/main_toolbar"/>
+
+    <include layout="@layout/main_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/filters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+
         <LinearLayout
-            android:id="@+id/filters"
-            android:layout_width="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px" />
+
+        <EditText
+            android:imeOptions="actionSearch"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-            <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_width="0px"
-                android:layout_height="0px"/>
+            android:layout_weight="1"
+            android:id="@+id/SearchText" />
 
-            <EditText android:imeOptions="actionSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/SearchText" />
-            <Switch
-                android:text="IncludeHidden"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Hidden" />
+        <Switch
+            android:text="IncludeHidden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Hidden" />
 
-            <ImageButton
-                android:id="@+id/refreshButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/common_action_bar_splitter"
-                app:srcCompat="@android:drawable/stat_notify_sync" />
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/common_action_bar_splitter"
+            app:srcCompat="@android:drawable/stat_notify_sync" />
 
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/syncButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/common_action_bar_splitter"
+            app:srcCompat="@android:drawable/stat_sys_upload" />
+        <ImageButton
+            android:id="@+id/syncDownButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/common_action_bar_splitter"
+            app:srcCompat="@android:drawable/stat_sys_download" />
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/myTableLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 </LinearLayout>

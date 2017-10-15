@@ -77,11 +77,11 @@
                             android:weightSum="1">
 
                             <!--<Button-->
-                                <!--android:id="@+id/button2"-->
-                                <!--android:layout_width="fill_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_marginTop="10dp"-->
-                                <!--android:text="SETTINGS" />-->
+                            <!--android:id="@+id/button2"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginTop="10dp"-->
+                            <!--android:text="SETTINGS" />-->
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -110,14 +110,16 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Update" />
+                                android:text="Update"
+                                android:visibility="gone" />
 
                             <Button
                                 android:id="@+id/statisticsButton"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Statistics" />
+                                android:text="Statistics"
+                                android:visibility="gone" />
 
                             <Button
                                 android:id="@+id/urlStatisticsButton"
@@ -135,13 +137,11 @@
                                 android:text="App Finder" />
 
                             <!--<Button-->
-                                <!--android:id="@+id/debugLogButton"-->
-                                <!--android:layout_width="fill_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_marginTop="10dp"-->
-                                <!--android:text="Debug @ Logcat" />-->
-
-
+                            <!--android:id="@+id/debugLogButton"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginTop="10dp"-->
+                            <!--android:text="Debug @ Logcat" />-->
 
 
                         </LinearLayout>
@@ -151,12 +151,12 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@+id/webView"
-                        android:id="@+id/ResponseAndDomainFiltersScrollView" >
+                        android:id="@+id/ResponseAndDomainFiltersScrollView">
 
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -201,12 +201,12 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@+id/webView"
-                        android:id="@+id/PendingNotificationsScrollView" >
+                        android:id="@+id/PendingNotificationsScrollView">
 
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -227,12 +227,12 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@+id/webView"
-                        android:id="@+id/LogsScrollView" >
+                        android:id="@+id/LogsScrollView">
 
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"

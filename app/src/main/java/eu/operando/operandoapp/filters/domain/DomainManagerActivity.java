@@ -63,9 +63,9 @@ public class DomainManagerActivity extends AppCompatActivity {
             //Load All Allowed Domains
             for (AllowedDomain a_dmn : new DatabaseHelper(this).getAllAllowedDomains()) {
                 final String info = a_dmn.info.trim();
-                final String exfiltrated = a_dmn.exfiltrated.trim();
+              //  final String exfiltrated = a_dmn.exfiltrated.trim();
                 Button b = new Button(this);
-                b.setText(info + " || " + exfiltrated);
+                b.setText(info + " || " + "  ");
                 b.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT));
                 ((TableLayout)AllowedDomainScrollView.getChildAt(0)).addView(b);
                 b.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class DomainManagerActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             try {
                                                 DatabaseHelper db = new DatabaseHelper(DomainManagerActivity.this);
-                                                boolean remove = db.removeAllowedDomain(info, exfiltrated);
+                                                boolean remove = db.removeAllowedDomain(info, null);
                                                 Toast.makeText(DomainManagerActivity.this, remove ? "Deleted from Allowed Domains" : "Could not be deleted from Allowed Domains", Toast.LENGTH_SHORT).show();
                                             } catch (Exception e) {
                                                 Toast.makeText(DomainManagerActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -96,8 +96,8 @@ public class DomainManagerActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             try {
                                                 DatabaseHelper db = new DatabaseHelper(DomainManagerActivity.this);
-                                                boolean add = db.addBlockedDomain(info, exfiltrated);
-                                                boolean remove = db.removeAllowedDomain(info, exfiltrated);
+                                                boolean add = db.addBlockedDomain(info, null);
+                                                boolean remove = db.removeAllowedDomain(info, null);
                                                 Toast.makeText(DomainManagerActivity.this, add && remove ? "Moved to Blocked Domains" : "Could not be moved to Blocked Domains", Toast.LENGTH_SHORT).show();
                                             } catch (Exception e) {
                                                 Toast.makeText(DomainManagerActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

@@ -51,7 +51,7 @@ import eu.operando.operandoapp.util.LocationHelper.GPSTracker;
 /**
  * Created by nikos on 23/5/2016.
  */
-public class RequestFilterUtil {
+class RequestFilterUtil {
     Context context;
     TelephonyManager telephonyManager;
     GPSTracker gpsTracker;
@@ -66,7 +66,7 @@ public class RequestFilterUtil {
         this.gpsTracker = new GPSTracker(context);
         this.contactsInfo = genContactsInfo();
         this.IMEI = genIMEI();
-        this.phoneNumber = genPhoneNumber();
+       // this.phoneNumber = genPhoneNumber();
         this.subscriberID = genSubscriberID();
         this.carrierName = genCarrierName();
         this.androidID = genAndroidID();
@@ -143,6 +143,7 @@ public class RequestFilterUtil {
 
     public String getPhoneNumber() {
         if (this.phoneNumber.equals("")){
+
             return ReadFile(new File(context.getFilesDir(), "phonenumber.conf"));
         }
         return this.phoneNumber;
