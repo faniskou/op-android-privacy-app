@@ -4,7 +4,7 @@
         "title": "test",
         "version": "1"
     },
-    "host": "localhost",
+    "host": "server-ptyx-mpsp14040.herokuapp.com",
     "tags": [
         {
             "name": "sync",
@@ -16,7 +16,7 @@
         }
     ],
     "schemes": [
-        "http"
+        "https"
     ],
     "paths": {
         "/statistics/{key}": {

@@ -1,5 +1,10 @@
 'use strict';
 var Mockgen = require('../../mockgen.js');
+var errorsmsg = require("../../errorsmessages.js");
+
+
+// Set some defaults
+db.defaults({ statistics: [], appidentity: [] }).write();
 /**
  * Operations on /statistics/{key}/{domainurl}
  */
@@ -14,37 +19,26 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/statistics/{key}/{domainurl}',
-                operation: 'get',
-                response: '200'
-            }, callback);
-        },
-        400: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/statistics/{key}/{domainurl}',
-                operation: 'get',
-                response: '400'
-            }, callback);
-        },
-        404: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/statistics/{key}/{domainurl}',
-                operation: 'get',
-                response: '404'
-            }, callback);
+            if (
+                db.get("statistics")
+                  .filter({ name: req.params.key  })
+                  .filter({  domainurl: req.params.domainurl })
+                  .size()
+                  .value() == 0
+              ) {
+                res.status(404).send(errorsmsg[404]());
+              } else {
+                try {
+                //  var datares ={"Statistics": [] };
+                var   datares = db
+                    .get("statistics")
+                    .filter({ name: req.params.key,domainurl: req.params.domainurl })
+                    .value();
+                  res.status(200).send(datares[0]);
+                } catch (err) {
+                  res.status(500).send(errorsmsg[500]());
+                }
+              }
         }
     },
     /**
@@ -57,26 +51,31 @@ module.exports = {
      */
     post: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/statistics/{key}/{domainurl}',
-                operation: 'post',
-                response: '200'
-            }, callback);
-        },
-        405: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/statistics/{key}/{domainurl}',
-                operation: 'post',
-                response: '405'
-            }, callback);
+            if (
+                db
+                  .get("statistics")
+                  .filter({ name: req.params.key,domainurl: req.params.domainurl })
+                  .size()
+                  .value() == 0
+              ) {
+                res.status(404).send(errorsmsg[404]());
+              } else {
+                try {
+                  var  input=req.body;
+                  delete input.id;
+                  input.name = req.params.key;
+                  input.domainurl = req.params.domainurl;
+                  var datares ={"Statistics": [] };
+                   datares.Statistics = db
+                    .get("statistics")
+                    .find({ name: req.params.key,domainurl: req.params.domainurl })
+                    .assign(input)
+                    .write()
+                  res.status(200).send(datares);
+                } catch (err) {
+                  res.status(500).send(errorsmsg[500]());
+                }
+              }
         }
     }
 };

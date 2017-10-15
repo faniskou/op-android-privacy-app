@@ -1,5 +1,8 @@
 'use strict';
 var Mockgen = require('../mockgen.js');
+var errorsmsg = require("../errorsmessages.js");
+var unique = require('array-unique');
+
 /**
  * Operations on /appsIdentity/groups
  */
@@ -14,37 +17,26 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/groups',
-                operation: 'get',
-                response: '200'
-            }, callback);
-        },
-        400: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/groups',
-                operation: 'get',
-                response: '400'
-            }, callback);
-        },
-        404: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/groups',
-                operation: 'get',
-                response: '404'
-            }, callback);
+            if (
+                db
+                  .get("appidentity")
+                  .size()
+                  .value() == 0
+              ) {
+                res.status(404).send(errorsmsg[404]());
+              } else {
+                try {
+                  var datares ={"groups": [] };
+                   datares.groups = unique(db
+                    .get("appidentity")
+                    .map('name')                    
+                    .value());
+                  res.status(200).send(datares);
+                } catch (err) {
+                  res.status(500).send(errorsmsg[500]());
+                }
+              }
         }
+        
     }
 };

@@ -1,16 +1,7 @@
 {
   "swagger": "2.0",
-  "info": {
-    "description": "This is a store server created to store data for the statistic operations of the operando application",
-    "version": "1.0.0",
-    "title": "Swagger server store",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  },
+  "info":{"title": "test","version": "1"},
   "host": "localhost",
-  "basePath": "/v1",
   "tags": [
     {
       "name": "sync",
