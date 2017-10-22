@@ -109,12 +109,12 @@ public class URLCheckerUtils {
                 int possision =RunningURLAppCheckers.indexOf(curr);
                 curr.count = 0;
                 RunningURLAppCheckers.set(possision,curr);
-                checkForCompletedURLAppChecker(context);
+        //        checkForCompletedURLAppChecker(context);
             }
         }
 
 
-     //   checkForCompletedURLAppChecker(context);
+        checkForCompletedURLAppChecker(context);
         return;
     }
     public static void checkForCompletedURLAppChecker(Context context){

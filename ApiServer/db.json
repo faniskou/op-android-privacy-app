@@ -1,73 +1,170 @@
 {
   "statistics": [
     {
-      "id": "0c3f0aa9-f8ec-4512-9800-530cac81ae58",
-      "name": "ioanna",
-      "domainurl": "ttttt",
-      "count": 222,
+      "id": "7902d5da-ef5b-475a-baf2-1add9d1f511a",
+      "name": "testme",
+      "domainurl": "www.enikos.gr",
+      "count": 2,
       "modified": "2001.07.04 AD at 12:08:56 PDT",
       "sourceactivity": "operando",
       "hidden": "no",
       "category": "news",
       "extrainfo": "{'for initialatation':'yes'}"
+    },
+
+    {
+      "id": "face1a07-76ed-4a8a-bead-aa77e0140326",
+      "name": "initial",
+      "domainurl": "media.enikos.gr",
+      "count": 52,
+      "modified": "2017-10-22 15:53:44",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "c0b53fb6-5904-4116-bcb8-d6a743b351a6",
+      "name": "initial",
+      "domainurl": "pagead2.googlesyndication.com",
+      "count": 3,
+      "modified": "2017-10-22 15:53:44",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "f38b7e17-6c3d-4852-835c-955111d27e1a",
+      "name": "initial",
+      "domainurl": "google-analytics.com",
+      "count": 4,
+      "modified": "2017-10-22 15:53:43",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "98706d38-05a6-43f7-8025-20d1104597b9",
+      "name": "initial",
+      "domainurl": "weather.gr",
+      "count": 11,
+      "modified": "2017-10-22 15:53:40",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "2752c38a-a1bc-4dd1-9083-2b15e996e229",
+      "name": "initial",
+      "domainurl": "tpc.googlesyndication.com",
+      "count": 1,
+      "modified": "2017-10-22 15:53:40",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "e39632c4-82fc-49f6-9f5f-9d51696fe71a",
+      "name": "initial",
+      "domainurl": "enikos.gr",
+      "count": 18,
+      "modified": "2017-10-22 15:53:38",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "18ea83da-805b-41bd-bd9c-1fb652834f67",
+      "name": "initial",
+      "domainurl": "enikos-gr.disqus.com",
+      "count": 1,
+      "modified": "2017-10-22 15:53:36",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "5feef22d-2476-4918-9f84-fbe7b8c0107c",
+      "name": "initial",
+      "domainurl": "tvenayobj",
+      "count": 1,
+      "modified": "2017-10-22 15:53:28",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "0f6df8d6-8db3-4051-931a-8b94d524a166",
+      "name": "initial",
+      "domainurl": "hviichbtq",
+      "count": 1,
+      "modified": "2017-10-22 15:53:28",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "66814b6c-9c1a-42a2-a5ed-8f61ade3d191",
+      "name": "initial",
+      "domainurl": "hekbxedpdejzpu",
+      "count": 1,
+      "modified": "2017-10-22 15:53:28",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "fc3cbc9d-f4f1-4d8b-8b50-06deded8a111",
+      "name": "initial",
+      "domainurl": "t1.gstatic.com",
+      "count": 1,
+      "modified": "2017-10-22 15:53:23",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
+    },
+    {
+      "id": "8c8e798a-d0cd-4c8a-aaae-188eb43e8863",
+      "name": "initial",
+      "domainurl": "t0.gstatic.com",
+      "count": 1,
+      "modified": "2017-10-22 15:53:23",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "extrainfo": "{}"
     }
   ],
   "appidentity": [
     {
       "id": "fd2a166c-e566-4713-b545-2f8d426b18c7",
-      "name": "fanis",
+      "name": "enikos",
       "domainurl": "www.enikos.gr",
-      "app_name": "ClashOfClanshGame",
-      "count": 2,
+      "app_name": "enikos",
+      "count": 1,
       "duration": 21
     },
     {
       "id": "189de9ef-44b8-41a8-9c8d-b2ccd47fd096",
-      "name": "fanis",
-      "domainurl": "www.enikos.gr",
-      "app_name": "ClashOfClanshGame",
+      "name": "enikos",
+      "domainurl": "media.enikos.gr",
+      "app_name": "enikos",
       "count": 2,
       "duration": 21
     },
     {
-      "id": "0a924528-29f0-4a11-bd94-d141d1b2690d",
-      "name": "fanis",
-      "domainurl": "www.enikos.gr",
-      "app_name": "ClashOfClanshGame",
-      "count": 2,
-      "duration": 21
+      "id": "fe685223-2c7d-4d8b-8fb7-decbf4fa31ad",
+      "name": "gameclashofclan",
+      "domainurl": "inbox.clashofclans.com:443",
+      "app_name": "gameclashofclan",
+      "count": 1,
+      "duration": 10
     },
     {
-      "id": "ab7fe75d-0ef1-4ac1-99e2-ccae7c3473e3",
-      "name": "fanis",
-      "domainurl": "www.enikos.gr",
-      "app_name": "ClashOfClanshGame",
-      "count": 2,
-      "duration": 21
-    },
-    {
-      "id": "fbec9128-eb87-402b-b794-9e8299ad64f5",
-      "name": "fanis",
-      "domainurl": "www.enikos.gr",
-      "app_name": "chrome",
-      "count": 2,
-      "duration": 21
-    },
-    {
-      "id": "4c6e3f21-b358-4478-89b7-363fd4648155",
-      "name": "fanis2",
-      "domainurl": "www.enikos.gr",
-      "app_name": "chrome",
-      "count": 2,
-      "duration": 21
-    },
-    {
-      "id": "64bb012f-fb5d-4747-b98a-e92d7b8f269d",
-      "name": "fanis",
-      "domainurl": "fanis.gr",
-      "app_name": "fanisapp",
-      "count": 233,
-      "duration": 212
+      "id": "a6de312d-f73a-450d-929c-fb20e07df9af",
+      "name": "gameclashofclan",
+      "domainurl": "service.supercell.net:443",
+      "app_name": "gameclashofclan",
+      "count": 1,
+      "duration": 10
     }
   ]
 }
