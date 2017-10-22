@@ -30,10 +30,12 @@ public class URLAppFinderActivity extends AppCompatActivity {
     private DatabaseHelper db;
     private ImageButton RecButton,RecordingButton, SearchButton , RefreshButton;
     private TextView EditText;
-    private Boolean recording = false;
+    private Boolean recording = false , searching= false;
     private String currentApp = "mock" ;
-    private Button  btnok,btnnotok ;
+    private Button  btnok,btnnotok,link1,link2,link3;
     private connectWithServer serverConnection;
+    private List<String> remoteapps =  new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +53,15 @@ public class URLAppFinderActivity extends AppCompatActivity {
 
         //Check server connections
         serverConnection = new  connectWithServer(this);
-        serverConnection.TestGetApps();
-        serverConnection.TestGetApp();
-
+        serverConnection.GetRemoteApps();
 
         db = mainContext.getDatabaseHelper();
         MainUtil.initializeMainContext(getApplicationContext());
         RecButton = (ImageButton) findViewById(R.id.recButton);
         RecordingButton = (ImageButton) findViewById(R.id.recordingButton);
+        link1 = (Button) findViewById(R.id.link1);
+        link2 = (Button) findViewById(R.id.link2);
+        link3 = (Button) findViewById(R.id.link3);
         SearchButton = (ImageButton) findViewById(R.id.searchButton);
         RefreshButton = (ImageButton)findViewById(R.id.refreshButton);
         EditText = (TextView)findViewById(R.id.editText);
@@ -102,6 +105,51 @@ public class URLAppFinderActivity extends AppCompatActivity {
                 }
             }
         });
+        link1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serverConnection.getRemoteApp(db,link1.getText().toString());
+            }
+        });
+        link2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serverConnection.getRemoteApp(db,link2.getText().toString());
+            }
+        });
+        link3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serverConnection.getRemoteApp(db,link3.getText().toString());
+            }
+        });
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int i = 0;
+                if (!recording){
+                    if (!searching) {
+                        for (String remoteapp : serverConnection.remoteapplist) {
+                            if (remoteapp.toLowerCase().contains(EditText.getText().toString().toLowerCase())) {
+                                searching = true;
+                                i = i+1;
+                                if (i ==1 )  {link1.setText(remoteapp);link1.setVisibility(View.VISIBLE);}
+                                else if (i ==2 ){link2.setText(remoteapp);link2.setVisibility(View.VISIBLE);}
+                                else if (i ==3 ){link3.setText(remoteapp);link3.setVisibility(View.VISIBLE);}
+                                else {break;}
+                            }
+                        }
+                    }
+                    else
+                    {
+                        searching = false;
+                        link1.setVisibility(View.GONE);
+                        link2.setVisibility(View.GONE);
+                        link3.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
         createapplist();
     }
 
@@ -112,7 +160,7 @@ public class URLAppFinderActivity extends AppCompatActivity {
         List<String> clist = db.getUrlAppCheckerApps();
         for (int i = 0; i < clist.size(); i++) {
             // Inflate your row "template" and fill out the fields.
-            tableapp. addView(createAppRow(i,clist.get(i)));
+            tableapp.addView(createAppRow(i,clist.get(i)));
         }
     };
     private LinearLayout createAppRow(final int i, final String urlApp) {
@@ -124,9 +172,6 @@ public class URLAppFinderActivity extends AppCompatActivity {
                          public void onClick(View view) {
                              int notificationId = mainContext.getNotificationId();
                              List<UrlAppChecker> urlAppCheckerApps = db.getUrlAppChecker(urlApp);
-                             if (i == 1 &&  urlAppCheckerApps.size()>0) {
-                                 serverConnection.TestSendApp(urlAppCheckerApps.get(0));
-                             }
                              if (a.isChecked()) {
                                     URLCheckerUtils.addToMonitor(urlApp, urlAppCheckerApps);
                              }
@@ -138,11 +183,11 @@ public class URLAppFinderActivity extends AppCompatActivity {
                      }
         );
         final ImageButton b =(ImageButton) row.findViewById(R.id.uploadAppButton);
+        final String s = urlApp;
         b.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { sendDataToServer(urlApp); }
+            public void onClick(View view) { sendDataToServer(s); }
         });
-        final String s = urlApp;
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,7 +199,12 @@ public class URLAppFinderActivity extends AppCompatActivity {
 
     void sendDataToServer(String urlApp)
     {
-
+        List<UrlAppChecker> urlAppCheckerApps = db.getUrlAppChecker(urlApp);
+        for (UrlAppChecker urlAppChecker:urlAppCheckerApps) {
+            if (urlApp.equals(urlAppChecker.app_name)) {
+                serverConnection.SendApp(urlAppChecker);
+            }
+        }
     }
 
     void createlist(List<UrlAppChecker> clist ){

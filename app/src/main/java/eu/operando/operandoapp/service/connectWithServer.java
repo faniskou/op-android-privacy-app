@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.operando.operandoapp.database.DatabaseHelper;
@@ -32,6 +33,10 @@ public class connectWithServer {
     final private RequestQueue nQueue;
     final private Context cContext;
     final private String apiurl = "https://server-ptyx-mpsp14040.herokuapp.com/";
+    public List<String> remoteapplist =  new ArrayList<String>();
+
+    //    final private String apiurl = "https://server-ptyx-mpsp14040.herokuapp.com/";
+
     //final private String initialcloudcatalog = "ioanna";
 
     public connectWithServer(Context currentContext) {
@@ -258,65 +263,13 @@ public class connectWithServer {
         nQueue.add(stringRequest);
     }
 
-    public void TestGetSync() {
+
+    public void SendApp(UrlAppChecker currentUrlAppChecker) {
         //test call api sync
-        JSONObject syncurl = new JSONObject();
-        JSONObject syncdata = new JSONObject();
-        String currentResponse = "";
-
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
-                apiurl + "appsIdentity/groups", null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Display the first 500 characters of the response string.
-                        String mstring = "";
-                        try {
-                            mstring = response.toString(2);
-                        } catch (JSONException e) {
-                            mstring = "";
-                            e.printStackTrace();
-                        }
-
-                        Toast.makeText(cContext,
-                                "Response is: " + mstring,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //error
-                if (error == null || error.networkResponse == null) {
-                    return;
-                }
-                //get status code here
-                final String statusCode = String.valueOf(error.networkResponse.statusCode);
-                //get response body and parse with appropriate encoding
-                try {
-                    Toast.makeText(cContext,
-                            "Fail in: " + new String(error.networkResponse.data, "UTF-8"),
-                            Toast.LENGTH_SHORT).show();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        // Add the request to the RequestQueue.
-        stringRequest.setTag("main");
-        nQueue.add(stringRequest);
-    }
-
-    public void TestSendApp(UrlAppChecker currentUrlAppChecker) {
-        //test call api sync
-        JSONObject syncurl = new JSONObject();
         JSONObject syncreq = new JSONObject();
-        JSONObject json = new JSONObject();
-        JSONObject manJson = new JSONObject();
         try {
             syncreq.put("id", 1);
-            syncreq.put("name", "checkapp");
+            syncreq.put("name", currentUrlAppChecker.app_name);
             syncreq.put("domainurl", currentUrlAppChecker.domainurl);
             syncreq.put("app_name", currentUrlAppChecker.app_name);
             syncreq.put("count", currentUrlAppChecker.count);
@@ -329,8 +282,8 @@ public class connectWithServer {
 
 
         // Request a string response from the provided URL.
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST,
-                apiurl + "appsIdentity/groups", syncreq,
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.PUT,
+                apiurl + "appsIdentity/" + currentUrlAppChecker.app_name , syncreq,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -371,16 +324,10 @@ public class connectWithServer {
         nQueue.add(stringRequest);
     }
 
-    public void TestGetApp() {
-        //test call api sync
-        JSONObject syncurl = new JSONObject();
-        JSONObject syncdata = new JSONObject();
-        String currentResponse = "";
-
-
+    public void getRemoteApp(final DatabaseHelper db, String key) {
         // Request a string response from the provided URL.
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
-                apiurl + "appsIdentity/appgroup", null,
+                apiurl + "appsIdentity/" + key + "/"+ key + "/", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -392,10 +339,38 @@ public class connectWithServer {
                             mstring = "";
                             e.printStackTrace();
                         }
+                        try {
+                            JSONArray dataArray = response.getJSONArray("AppIdentities");
+                            for (int n = 0; n < dataArray.length(); n++) {
+                                JSONObject object = dataArray.getJSONObject(n);
 
-                        Toast.makeText(cContext,
-                                "Response is: " + mstring,
-                                Toast.LENGTH_SHORT).show();
+                                Toast.makeText(cContext,
+                                        "Loading : " +  object.getString("domainurl"),
+                                        Toast.LENGTH_SHORT).show();
+
+                                String curr_app_name = object.getString("app_name");
+                                int curr_count = object.getInt("count");
+                                String curr_domainurl = object.getString("domainurl");
+                                int curr_secs = object.getInt("duration");
+
+                                UrlAppChecker input = new UrlAppChecker();
+                                input =
+                                        new UrlAppChecker(curr_app_name,curr_domainurl,curr_count,curr_secs);
+                                try {
+                                        db.createUrlAppChecker(input);
+                                } catch (Exception e) {
+                                    Toast.makeText(cContext,
+                                            "Fail to download app checker statistic ",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(cContext,
+                                    "Fail to loop on the response data ",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -417,16 +392,11 @@ public class connectWithServer {
             }
         });
         // Add the request to the RequestQueue.
-        stringRequest.setTag("main");
+        stringRequest.setTag("downloadapps");
         nQueue.add(stringRequest);
     }
 
-    public void TestGetApps() {
-        //test call api sync
-        JSONObject syncurl = new JSONObject();
-        JSONObject syncdata = new JSONObject();
-        String currentResponse = "";
-
+    public void GetRemoteApps() {
 
         // Request a string response from the provided URL.
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
@@ -438,13 +408,21 @@ public class connectWithServer {
                         String mstring = "";
                         try {
                             mstring = response.toString(2);
-                        } catch (JSONException e) {
+                            JSONArray dataArray = response.getJSONArray("groups");
+                            remoteapplist =  new ArrayList<String>();
+                            for (int n = 0; n < dataArray.length(); n++) {
+                                String object = dataArray.getString(n);
+
+                                remoteapplist.add(object);
+
+                            }
+                            } catch (JSONException e) {
                             mstring = "";
                             e.printStackTrace();
                         }
 
                         Toast.makeText(cContext,
-                                "Response is: " + mstring,
+                                "Loaded remote apps: " + mstring,
                                 Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -467,7 +445,7 @@ public class connectWithServer {
             }
         });
         // Add the request to the RequestQueue.
-        stringRequest.setTag("main");
+        stringRequest.setTag("urlapps");
         nQueue.add(stringRequest);
     }
 
