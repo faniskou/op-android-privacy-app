@@ -199,17 +199,10 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_home, null));
         tabHost.addTab(tabSpec);
 
-<<<<<<< HEAD
 //        tabSpec = tabHost.newTabSpec("response_domain_filters");
 //        tabSpec.setContent(R.id.ResponseAndDomainFiltersScrollView);
 //        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter, null));
 //        tabHost.addTab(tabSpec);
-=======
-        tabSpec = tabHost.newTabSpec("response_domain_filters");
-        tabSpec.setContent(R.id.ResponseAndDomainFiltersScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter, null));
-        tabHost.addTab(tabSpec);
->>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
 
         tabSpec = tabHost.newTabSpec("pending_notifications");
         tabSpec.setContent(R.id.PendingNotificationsScrollView);
@@ -482,7 +475,6 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(settingsIntent);
                 return true;
             case R.id.apn_menu: {
-<<<<<<< HEAD
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.action_apn);
                 builder.setPositiveButton(android.R.string.cancel, null);
@@ -500,25 +492,6 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
 
 //                Toast.makeText(this, "Not implemented in this version please use wifi.", Toast.LENGTH_SHORT).show();
-=======
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(R.string.action_apn);
-//                builder.setPositiveButton(android.R.string.cancel, null);
-//                builder.setNegativeButton("Open APN Settings", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent apnIntent = new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
-//                        apnIntent.putExtra("sub_id", 1); //SubscriptionManager.NAME_SOURCE_SIM_SOURCE
-//                        startActivity(apnIntent);
-//                    }
-//                });
-//                String message = "In order to enable OperandoApp proxy while using wireless networks (e.g. 3G), you will need to modify the corresponding Access Point configuration for your provider. Please set the following values:\n\nProxy: 127.0.0.1\nPort: 8899";
-//                builder.setMessage(message);
-//                builder.create().show();
-//
-//                return true;
-                Toast.makeText(this, "Not implemented in this version please use wifi.", Toast.LENGTH_SHORT).show();
->>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
                 return true;
             }
             case R.id.help_menu: {

@@ -21,11 +21,7 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:src="@drawable/logo_bevel_lite" />
-=======
-            android:src="@drawable/logo_bevel" />
->>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
 
         <TextView
             android:layout_width="wrap_content"

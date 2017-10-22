@@ -118,13 +118,6 @@ public class ProxyService extends Service {
     private MainContext mainContext = MainContext.INSTANCE;
     private ProcExplorer procExplorer;
     private DatabaseHelper db;
-<<<<<<< HEAD
-=======
-    private String applicationInfo;
-
-    private String[] locationInfo, contactsInfo, macAdresses;
-    private String IMEI, subscriberID, carrierName, androidID;
->>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
 
     //fanisadd
     public static String getDomainName(String url) {
