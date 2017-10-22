@@ -1,6 +1,7 @@
 package eu.operando.operandoapp.statistics;
 
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,8 +46,10 @@ public class StatisticsListActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private Switch s;
-    private TextView t;
+    private TextView t,keystringt;
     private ImageButton r,rsync,rsyncdown;
+    private Button syncb;
+    private LinearLayout keylayout;
     private int IsInSearchMode;
     private connectWithServer a;
     @Override
@@ -72,8 +75,11 @@ public class StatisticsListActivity extends AppCompatActivity {
 
 
         s = (Switch) findViewById(R.id.Hidden);
+        syncb = (Button) findViewById(R.id.buttonsync);
         t = (TextView) findViewById(R.id.SearchText);
+        keystringt= (TextView) findViewById(R.id.keySyncString);
         r = (ImageButton) findViewById(R.id.refreshButton);
+        keylayout = (LinearLayout) findViewById(R.id.uploadtextgroup);
         rsync = (ImageButton) findViewById(R.id.syncButton);
         rsyncdown = (ImageButton) findViewById(R.id.syncDownButton);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -97,6 +103,16 @@ public class StatisticsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) { syncDataDown();
 
+            }
+        });
+        syncb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (keylayout.getVisibility() == view.GONE) {
+                    keylayout.setVisibility(view.VISIBLE);
+                } else {
+                    keylayout.setVisibility(view.GONE);
+                }
             }
         });
         t.addTextChangedListener(new TextWatcher() {
@@ -138,12 +154,8 @@ public class StatisticsListActivity extends AppCompatActivity {
             table.addView(createRow(i));
         }
     }
-    void syncData(){
-        a.syncStatistics(urlStatistics);
-    }
-    void syncDataDown(){
-        a.getSyncStatistics(db);
-    }
+    void syncData(){keylayout.setVisibility(View.GONE);a.syncStatistics(urlStatistics, (String) keystringt.getText().toString().trim()); }
+    void syncDataDown(){keylayout.setVisibility(View.GONE);a.getSyncStatistics(db,(String) keystringt.getText().toString().trim());}
     private LinearLayout createRow(int i) {
         final LinearLayout row = (LinearLayout) LayoutInflater.from(StatisticsListActivity.this).inflate(R.layout.content_statistics_list, null);
         ((TextView) row.findViewById(R.id.textDomain)).setText(urlStatistics.get(i).domainurl);

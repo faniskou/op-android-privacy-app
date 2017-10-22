@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OperandoApp</string>
+    <string name="app_name">OperandoApp Lite</string>
 
     <string name="help_menu">Help</string>
 
@@ -24,8 +24,8 @@
     <string name="no_data">No Data</string>
 
     <string name="app_company_name">University of Piraeus Research Centre</string>
-    <string name="app_copyright">Copyright \u00A9 2016</string>
-    <string name="app_url" translatable="false">https://github.com/OPERANDOH2020/op-android-privacy-app</string>
+    <string name="app_copyright">Copyright \u00A9 2017</string>
+    <string name="app_url" translatable="false">https://github.com/faniskou/op-android-privacy-app</string>
     <!-- application end -->
 
     <string name="group_by_title">Group Access Points By</string>
@@ -62,8 +62,8 @@
     <string name="about_description_title">Description:</string>
     <string name="about_description_text">Lorem Ipsum</string>
     <string name="about_libraries_title">Open Source Projects Used:</string>
-    <string name="about_library_apache" translatable="false">Apache Commons</string>
-    <string name="about_library_apache_url" translatable="false">https://commons.apache.org</string>
+    <string name="about_library_apache" translatable="false">Volley</string>
+    <string name="about_library_apache_url" translatable="false">https://github.com/google/volley</string>
     <string name="about_LittleProxy_mitm" translatable="false">LittleProxy-mitm</string>
     <string name="about_LittleProxy_mitm_url" translatable="false">https://github.com/ganskef/LittleProxy-mitm</string>
     <string name="about_LittleProxy" translatable="false">LittleProxy</string>
@@ -74,17 +74,18 @@
     <string name="about_AndroidProxySetter_url" translatable="false">https://github.com/jpkrause/AndroidProxySetter</string>
     <string name="about_APL" translatable="false">Android Proxy Library (APL)</string>
     <string name="about_APL_url" translatable="false">https://github.com/shouldit/android-proxy/tree/master/android-proxy-library</string>
-    <string name="about_otto" translatable="false">Otto</string>
-    <string name="about_otto_url" translatable="false">https://square.github.io/otto</string>
+    <string name="about_otto" translatable="false">Swaggerize Express</string>
+    <string name="about_otto_url" translatable="false">https://github.com/krakenjs/swaggerize-express</string>
     <string name="about_nogotofail" translatable="false">nogotofail</string>
     <string name="about_nogotofail_url" translatable="false">https://github.com/google/nogotofail</string>
     <string name="about_netguard" translatable="false">NetGuard</string>
     <string name="about_netguard_url" translatable="false">https://github.com/M66B/NetGuard</string>
     <string name="about_library_material">Material Design Icons</string>
     <string name="about_library_material_url" translatable="false">https://design.google.com/icons</string>
+    <string name="text_upload_key">SyncKey</string>
 
     <string name="about_contributor_title">Contributors:</string>
-    <string name="about_contributor_list" translatable="false">Nikos Lykousas, Constantinos Patsakis</string>
+    <string name="about_contributor_list" translatable="false">Kouvaris Theofanis, Nikos Lykousas, Constantinos Patsakis</string>
     <string name="title_activity_domain_manager">DomainManagerActivity</string>
     <string name="title_activity_permission_manager">PermissionManager</string>
     <string name="title_activity_permissions_per_domain">PermissionsPerDomainActivity</string>
@@ -185,6 +186,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_urlapp_finder">URLAppFinderActivity</string>
+    <string name="Sync">Sync</string>
     <!-- about end -->
 
 

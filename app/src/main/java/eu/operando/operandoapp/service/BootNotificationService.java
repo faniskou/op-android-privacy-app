@@ -42,16 +42,17 @@ public class BootNotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         MainUtil.initializeMainContext(getApplicationContext());
-        Authority authority = new Authority(getApplicationContext());
-        try {
-            if (CertificateUtil.isCACertificateInstalled(authority.aliasFile(BouncyCastleSslEngineSource.KEY_STORE_FILE_EXTENSION),
-                    BouncyCastleSslEngineSource.KEY_STORE_TYPE,
-                    authority.password())) {
-                MainUtil.startProxyService(mainContext);
-            }
-        } catch (GeneralSecurityException ex) {
-            ex.printStackTrace();
-        }
+//        Authority authority = new Authority(getApplicationContext());
+//        try {
+//            if (CertificateUtil.isCACertificateInstalled(authority.aliasFile(BouncyCastleSslEngineSource.KEY_STORE_FILE_EXTENSION),
+//                    BouncyCastleSslEngineSource.KEY_STORE_TYPE,
+//                    authority.password())) {
+//                MainUtil.startProxyService(mainContext);
+//            }
+//        } catch (GeneralSecurityException ex) {
+//            ex.printStackTrace();
+//        }
+        MainUtil.startProxyService(mainContext);
 
         /* AN apotyxei o proxy, tote allazw to notification" */
         //mainContext.getNotificationUtil().showDisconnectedNotification();

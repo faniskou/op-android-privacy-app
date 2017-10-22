@@ -199,10 +199,10 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_home, null));
         tabHost.addTab(tabSpec);
 
-        tabSpec = tabHost.newTabSpec("response_domain_filters");
-        tabSpec.setContent(R.id.ResponseAndDomainFiltersScrollView);
-        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter, null));
-        tabHost.addTab(tabSpec);
+//        tabSpec = tabHost.newTabSpec("response_domain_filters");
+//        tabSpec.setContent(R.id.ResponseAndDomainFiltersScrollView);
+//        tabSpec.setIndicator("", getResources().getDrawable(R.drawable.ic_filter, null));
+//        tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("pending_notifications");
         tabSpec.setContent(R.id.PendingNotificationsScrollView);
@@ -292,15 +292,15 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             }
         });
 
-        responseFiltersButton = (Button) findViewById(R.id.responseFiltersButton);
-        responseFiltersButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mainContext.getContext(), ResponseFiltersActivity.class);
-                startActivity(i);
-            }
-        });
+//        responseFiltersButton = (Button) findViewById(R.id.responseFiltersButton);
+//        responseFiltersButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mainContext.getContext(), ResponseFiltersActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         domainFiltersButton = (Button) findViewById(R.id.domainFiltersButton);
         domainFiltersButton.setOnClickListener(new View.OnClickListener() {
@@ -312,25 +312,25 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             }
         });
 
-        domainManagerButton = (Button) findViewById(R.id.domainManagerButton);
-        domainManagerButton.setOnClickListener(new View.OnClickListener() {
+//        domainManagerButton = (Button) findViewById(R.id.domainManagerButton);
+//        domainManagerButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mainContext.getContext(), DomainManagerActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mainContext.getContext(), DomainManagerActivity.class);
-                startActivity(i);
-            }
-        });
-
-        permissionsPerDomainButton = (Button) findViewById(R.id.permissionsPerDomainButton);
-        permissionsPerDomainButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mainContext.getContext(), DomainManagerActivity.class);
-                startActivity(i);
-            }
-        });
+//        permissionsPerDomainButton = (Button) findViewById(R.id.permissionsPerDomainButton);
+//        permissionsPerDomainButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(mainContext.getContext(), DomainManagerActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         trustedAccessPointsButton = (Button) findViewById(R.id.trustedAccessPointsButton);
         trustedAccessPointsButton.setOnClickListener(new View.OnClickListener() {
@@ -475,23 +475,23 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(settingsIntent);
                 return true;
             case R.id.apn_menu: {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(R.string.action_apn);
-//                builder.setPositiveButton(android.R.string.cancel, null);
-//                builder.setNegativeButton("Open APN Settings", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent apnIntent = new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
-//                        apnIntent.putExtra("sub_id", 1); //SubscriptionManager.NAME_SOURCE_SIM_SOURCE
-//                        startActivity(apnIntent);
-//                    }
-//                });
-//                String message = "In order to enable OperandoApp proxy while using wireless networks (e.g. 3G), you will need to modify the corresponding Access Point configuration for your provider. Please set the following values:\n\nProxy: 127.0.0.1\nPort: 8899";
-//                builder.setMessage(message);
-//                builder.create().show();
-//
-//                return true;
-                Toast.makeText(this, "Not implemented in this version please use wifi.", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.action_apn);
+                builder.setPositiveButton(android.R.string.cancel, null);
+                builder.setNegativeButton("Open APN Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent apnIntent = new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
+                        apnIntent.putExtra("sub_id", 1); //SubscriptionManager.NAME_SOURCE_SIM_SOURCE
+                        startActivity(apnIntent);
+                    }
+                });
+                String message = "In order to enable OperandoApp proxy while using wireless networks (e.g. 3G), you will need to modify the corresponding Access Point configuration for your provider. Please set the following values:\n\nProxy: 127.0.0.1\nPort: 8899";
+                builder.setMessage(message);
+                builder.create().show();
+
+
+//                Toast.makeText(this, "Not implemented in this version please use wifi.", Toast.LENGTH_SHORT).show();
                 return true;
             }
             case R.id.help_menu: {
@@ -575,18 +575,19 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     }
 
     private void initializeProxyService() {
-        Authority authority = mainContext.getAuthority();
-        try {
-            if (CertificateUtil.isCACertificateInstalled(authority.aliasFile(BouncyCastleSslEngineSource.KEY_STORE_FILE_EXTENSION),
-                    BouncyCastleSslEngineSource.KEY_STORE_TYPE,
-                    authority.password())) {
-                startProxyService();
-            } else {
-                installCert();
-            }
-        } catch (RootCertificateException | GeneralSecurityException | OperatorCreationException | IOException ex) {
-            Logger.error(this, ex.getMessage(), ex.getCause());
-        }
+//        Authority authority = mainContext.getAuthority();
+//        try {
+//            if (CertificateUtil.isCACertificateInstalled(authority.aliasFile(BouncyCastleSslEngineSource.KEY_STORE_FILE_EXTENSION),
+//                    BouncyCastleSslEngineSource.KEY_STORE_TYPE,
+//                    authority.password())) {
+//                startProxyService();
+//            } else {
+//                installCert();
+//            }
+            startProxyService();
+//        } catch (RootCertificateException | GeneralSecurityException | OperatorCreationException | IOException ex) {
+//            Logger.error(this, ex.getMessage(), ex.getCause());
+//        }
     }
 
     protected boolean shouldReload() {
@@ -665,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 final File phoneFile = new File(getFilesDir(), "phonenumber.conf");
                 if (!phoneFile.exists()) {
                     new AlertDialog.Builder(MainActivity.this)
-                            .setIcon(R.drawable.logo_bevel)
+                            .setIcon(R.drawable.logo_bevel_lite)
                             .setTitle("Input phone number")
                             .setMessage("The phone number could not be fetched automatically. Please input it below for automated exfiltration checks.")
                             .setView(phoneInput)
@@ -754,7 +755,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                         try {
                             final int notificationId = Integer.parseInt(((Button) v).getText().toString().split(" \\|\\| ")[2]);
                             new AlertDialog.Builder(MainActivity.this)
-                                    .setIcon(R.drawable.logo_bevel)
+                                    .setIcon(R.drawable.logo_bevel_lite)
                                     .setTitle("Manage Application Permission")
                                     .setMessage("What do you want to do with this specific application permission?")
                                     .setPositiveButton("ALLOW", new DialogInterface.OnClickListener() {

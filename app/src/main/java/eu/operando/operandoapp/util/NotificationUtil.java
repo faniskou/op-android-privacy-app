@@ -62,12 +62,12 @@ public class NotificationUtil {
             sb.delete(sb.length() - 2, sb.length() - 1);
 
             RemoteViews smallContentView = new RemoteViews(context.getPackageName(), R.layout.proxy_notification_small);
-            smallContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel);
+            smallContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel_lite);
             smallContentView.setTextViewText(R.id.titleTxtView, "Personal Information");
             smallContentView.setTextViewText(R.id.subtitleTxtView, "Expand for more info");
 
             RemoteViews bigContentView = new RemoteViews(context.getPackageName(), R.layout.proxy_notification_large);
-            bigContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel);
+            bigContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel_lite);
             bigContentView.setTextViewText(R.id.titleTxtView, "Personal Information");
             bigContentView.setTextViewText(R.id.subtitleTxtView, applicationInfo.replaceAll("\\s\\(.*?\\)", "") + " requires access to " + sb);
             bigContentView.setTextViewText(R.id.allowBtn, "Allow");
@@ -104,7 +104,7 @@ public class NotificationUtil {
             bigContentView.setOnClickPendingIntent(R.id.blockBtn, pendingBlockIntent);
 
             Notification.Builder mBuilder = new Notification.Builder(context)
-                    .setSmallIcon(R.drawable.logo_bevel)
+                    .setSmallIcon(R.drawable.logo_bevel_lite)
                     .setContent(smallContentView);
             Notification proxyNotification = mBuilder.build();
             proxyNotification.defaults |= Notification.DEFAULT_ALL;
@@ -125,12 +125,12 @@ public class NotificationUtil {
             StringBuilder sb = new StringBuilder();
 
             RemoteViews smallContentView = new RemoteViews(context.getPackageName(), R.layout.empty_notification_large);
-            smallContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel);
+            smallContentView.setImageViewResource(R.id.image, R.drawable.logo_bevel_lite);
             smallContentView.setTextViewText(R.id.titleTxtView, "We found a monitored app running");
             smallContentView.setTextViewText(R.id.subtitleTxtView, "It seems "+ applicationInfo.replaceAll("\\s\\(.*?\\)", "") + " running");
 
             Notification.Builder mBuilder = new Notification.Builder(context)
-                    .setSmallIcon(R.drawable.logo_bevel)
+                    .setSmallIcon(R.drawable.logo_bevel_lite)
                     .setContent(smallContentView);
             Notification proxyNotification = mBuilder.build();
             proxyNotification.defaults |= Notification.DEFAULT_ALL;

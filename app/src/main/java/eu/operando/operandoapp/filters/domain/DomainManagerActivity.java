@@ -73,7 +73,7 @@ public class DomainManagerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         try {
                             new AlertDialog.Builder(DomainManagerActivity.this)
-                                    .setIcon(R.drawable.logo_bevel)
+                                    .setIcon(R.drawable.logo_bevel_lite)
                                     .setTitle("Manage Application Permission")
                                     .setMessage("What do you want to do with this specific application permission?")
                                     .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
@@ -133,7 +133,7 @@ public class DomainManagerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         try {
                             new AlertDialog.Builder(DomainManagerActivity.this)
-                                    .setIcon(R.drawable.logo_bevel)
+                                    .setIcon(R.drawable.logo_bevel_lite)
                                     .setTitle("Manage Application Permission")
                                     .setMessage("What do you want to do with this specific application permission?")
                                     .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {

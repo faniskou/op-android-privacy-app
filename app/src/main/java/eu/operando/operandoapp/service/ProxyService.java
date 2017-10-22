@@ -112,16 +112,12 @@ import eu.operando.operandoapp.database.model.UrlStatistic;
 
 public class ProxyService extends Service {
 
-    private static final String CustomHeaderField = "OperandoMetaInfo";
+    //private static final String CustomHeaderField = "OperandoMetaInfo";
     private HttpProxyServer proxy;
     private int port = 8899;
     private MainContext mainContext = MainContext.INSTANCE;
     private ProcExplorer procExplorer;
     private DatabaseHelper db;
-    private String applicationInfo;
-
-    private String[] locationInfo, contactsInfo, macAdresses;
-    private String IMEI, subscriberID, carrierName, androidID;
 
     //fanisadd
     public static String getDomainName(String url) {
@@ -146,26 +142,28 @@ public class ProxyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (proxy == null) {
             Log.e("OPERANDO", "-- PROXY ON START COMMAND--");
-            HttpFiltersSource filtersSource = getFiltersSource();
+            //HttpFiltersSource filtersSource = getFiltersSource();
+            HttpFiltersSource liteFiltersSource = getLiteFiltersSource();
+
             try {
                 proxy = DefaultHttpProxyServer.bootstrap()
                         .withPort(port)
-                        .withManInTheMiddle(new CertificateSniffingMitmManager(mainContext.getAuthority()))
+                        //.withManInTheMiddle(new CertificateSniffingMitmManager(mainContext.getAuthority()))
                         .withAllowLocalOnly(false)
-                        .withFiltersSource(filtersSource)
+                        .withFiltersSource(liteFiltersSource)
                         .withName("OperandoProxy")
                         .plusActivityTracker(new ActivityTrackerAdapter() {
 
                             /*
                             Get the package responsible for each request
                              */
-                            @Override
-                            public void requestReceivedFromClient(FlowContext flowContext,
-                                                                  HttpRequest httpRequest) {
-                                if (!MainUtil.isProxyPaused(mainContext)) {
-                                    httpRequest.headers().add(CustomHeaderField, procExplorer.handleCommand(flowContext.getClientAddress()));
-                                }
-                            }
+                            //@Override
+        //                    public void requestReceivedFromClient(FlowContext flowContext,
+             //                                                     HttpRequest httpRequest) {
+      //                          if (!MainUtil.isProxyPaused(mainContext)) {
+      //                              httpRequest.headers().add(CustomHeaderField, procExplorer.handleCommand(flowContext.getClientAddress()));
+      //                          }
+           //                 }
                         })
                         .start();
             } catch (Exception e) {
@@ -175,6 +173,54 @@ public class ProxyService extends Service {
         return START_STICKY;
     }
 
+    //140140 ελενχος για φιλτρα
+    private HttpFiltersSource getLiteFiltersSource() {
+        String applicationInfo;
+
+        String[] locationInfo, contactsInfo, macAdresses;
+        String IMEI, subscriberID, carrierName, androidID;
+
+        return new HttpFiltersSourceAdapter() {
+            @Override
+            public HttpFilters filterRequest(HttpRequest originalRequest) {
+                return new HttpFiltersAdapter(originalRequest) {
+                    // 140140 Εδώ ελενχεται η καθε διευθυνση
+                    // προτεινεται να  προσθεσουμε μια καταγραφη
+                    @Override
+                    public HttpResponse clientToProxyRequest(HttpObject httpObject) {
+                        //check for proxy running
+                        if (MainUtil.isProxyPaused(mainContext)) {
+                            return null;
+                        }
+                        if (httpObject instanceof HttpMessage) {
+
+                            HttpMessage request = (HttpMessage) httpObject;
+
+                            Log.d("checkingTheUrl", ((HttpRequest) request).uri());
+                            if (MainUtil.CheckerUtil.isRecording()) {
+                                MainUtil.CheckerUtil.addURLAppChecker(((HttpRequest) request).uri());
+                            }
+                            MainUtil.CheckerUtil.checkURLAppChecker(getBaseContext(),((HttpRequest) request).uri());
+
+                            if (!ProxyUtils.isCONNECT(request) && request.headers().contains(HttpHeaderNames.HOST)) {
+                                String hostName = ((HttpRequest) request).uri();
+                                if (db.isDomainBlocked(hostName))
+                                    return getBlockedHostResponse(hostName);
+                                //fanisadd
+                                if (!hostName.startsWith("/")) {
+                                    String newdomain = getDomainName(hostName);
+                                    if (newdomain != "") {
+                                        db.createUrlStatistic(newdomain);
+                                    }
+                                }
+                            }
+                        }
+                        return null;
+                    }
+                };
+            }
+        };
+    }
 
     //140140 ελενχος για φιλτρα
     private HttpFiltersSource getFiltersSource() {
@@ -248,10 +294,10 @@ public class ProxyService extends Service {
 
                             HttpMessage request = (HttpMessage) httpObject;
 
-                            if (request.headers().contains(CustomHeaderField)) {
-                                applicationInfo = request.headers().get(CustomHeaderField);
-                                request.headers().remove(CustomHeaderField);
-                            }
+           //                 if (request.headers().contains(CustomHeaderField)) {
+           //                     applicationInfo = request.headers().get(CustomHeaderField);
+           //                     request.headers().remove(CustomHeaderField);
+           //                 }
 
                             if (request.headers().contains(HttpHeaderNames.ACCEPT_ENCODING)) {
                                 request.headers().remove(HttpHeaderNames.ACCEPT_ENCODING);
@@ -264,7 +310,7 @@ public class ProxyService extends Service {
 
                             if (!ProxyUtils.isCONNECT(request) && request.headers().contains(HttpHeaderNames.HOST)) {
                                 String hostName = ((HttpRequest) request).uri(); //request.headers().get(HttpHeaderNames.HOST).toLowerCase();
-                                if (db.isDomainBlocked(hostName))
+                                 if (db.isDomainBlocked(hostName))
                                     return getBlockedHostResponse(hostName);
                                 //fanisadd
                                 if (!hostName.startsWith("/")) {

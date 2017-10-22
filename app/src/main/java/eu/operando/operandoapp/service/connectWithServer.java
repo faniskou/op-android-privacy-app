@@ -1,4 +1,5 @@
 package eu.operando.operandoapp.service;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -31,14 +32,14 @@ public class connectWithServer {
     final private RequestQueue nQueue;
     final private Context cContext;
     final private String apiurl = "https://server-ptyx-mpsp14040.herokuapp.com/";
-    final private String initialcloudcatalog = "fanis";
+    //final private String initialcloudcatalog = "ioanna";
 
     public connectWithServer(Context currentContext) {
         nQueue = Volley.newRequestQueue(currentContext);
         cContext = currentContext;
     }
-    public void syncStatistics(List<UrlStatistic> urlStatistics)
-    {
+
+    public void syncStatistics(List<UrlStatistic> urlStatistics, final String key) {
         Toast.makeText(cContext,
                 "start Uploading Screen Statistics ",
                 Toast.LENGTH_SHORT).show();
@@ -46,29 +47,32 @@ public class connectWithServer {
             JSONObject syncreq = new JSONObject();
             try {
                 syncreq.put("id", 1);
-                syncreq.put("name", initialcloudcatalog);
-                syncreq.put("domainurl", curr.domainurl );
+                syncreq.put("name", key);
+                syncreq.put("domainurl", curr.domainurl);
                 syncreq.put("count", curr.count);
                 syncreq.put("modified", curr.modified);
                 syncreq.put("sourceactivity", "operando");
-                if (curr.hidden<1){syncreq.put("hidden", "no");}else{syncreq.put("hidden", "yes");}
+                if (curr.hidden < 1) {
+                    syncreq.put("hidden", "no");
+                } else {
+                    syncreq.put("hidden", "yes");
+                }
                 syncreq.put("category", curr.category);
                 syncreq.put("extrainfo", "{}");
-            }
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             final String toasting = curr.domainurl;
             // Request a string response from the provided URL.
             JsonObjectRequest jRequest = new JsonObjectRequest(Request.Method.PUT,
-                    apiurl + "statistics/" + initialcloudcatalog, syncreq,
+                    apiurl + "statistics/" + key, syncreq,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             // Display the first 500 characters of the response string.
                             String mstring = "";
                             try {
-                                mstring = "upload "+ toasting + "-->" + response.toString(2);
+                                mstring = "upload " + toasting + "-->" + response.toString(2);
                             } catch (JSONException e) {
                                 mstring = "";
                                 e.printStackTrace();
@@ -90,10 +94,9 @@ public class connectWithServer {
                     }
                     //get status code here
                     final String statusCode = String.valueOf(error.networkResponse.statusCode);
-                    if (statusCode.equals("409")){
-                        updateStatistic(curr);
-                    }
-                    else {
+                    if (statusCode.equals("409")) {
+                        updateStatistic(curr, key);
+                    } else {
                         //get response body and parse with appropriate encoding
                         try {
                             Toast.makeText(cContext,
@@ -112,68 +115,68 @@ public class connectWithServer {
 
     }
 
-    public void updateStatistic(final UrlStatistic curr)
-    {
-            JSONObject syncreq = new JSONObject();
-            try {
-                syncreq.put("id", 1);
-                syncreq.put("name", initialcloudcatalog);
-                syncreq.put("domainurl", curr.domainurl );
-                syncreq.put("count", curr.count);
-                syncreq.put("modified", curr.modified);
-                syncreq.put("sourceactivity", "operando");
-                if (curr.hidden<1){syncreq.put("hidden", "no");}else{syncreq.put("hidden", "yes");}
-                syncreq.put("category", curr.category);
-                syncreq.put("extrainfo", "{}");
+    public void updateStatistic(final UrlStatistic curr, String key) {
+        JSONObject syncreq = new JSONObject();
+        try {
+            syncreq.put("id", 1);
+            syncreq.put("name", key);
+            syncreq.put("domainurl", curr.domainurl);
+            syncreq.put("count", curr.count);
+            syncreq.put("modified", curr.modified);
+            syncreq.put("sourceactivity", "operando");
+            if (curr.hidden < 1) {
+                syncreq.put("hidden", "no");
+            } else {
+                syncreq.put("hidden", "yes");
             }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-            final String toasting = curr.domainurl;
-            // Request a string response from the provided URL.
-            JsonObjectRequest jRequest = new JsonObjectRequest(Request.Method.POST,
-                    apiurl + "statistics/" + initialcloudcatalog + "/" + curr.domainurl, syncreq,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Display the first 500 characters of the response string.
-                            Toast.makeText(cContext,
-                                    "Refresh Upload finished: " + toasting,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //error
-                    if (error == null || error.networkResponse == null) {
+            syncreq.put("category", curr.category);
+            syncreq.put("extrainfo", "{}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final String toasting = curr.domainurl;
+        // Request a string response from the provided URL.
+        JsonObjectRequest jRequest = new JsonObjectRequest(Request.Method.POST,
+                apiurl + "statistics/" + key + "/" + curr.domainurl, syncreq,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Display the first 500 characters of the response string.
                         Toast.makeText(cContext,
                                 "Refresh Upload finished: " + toasting,
                                 Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    //get status code here
-                    final String statusCode = String.valueOf(error.networkResponse.statusCode);
-                    //get response body and parse with appropriate encoding
-                    try {
-                        Toast.makeText(cContext,
-                                "Fail in: " + new String(error.networkResponse.data, "UTF-8"),
-                                Toast.LENGTH_SHORT).show();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //error
+                if (error == null || error.networkResponse == null) {
+                    Toast.makeText(cContext,
+                            "Refresh Upload finished: " + toasting,
+                            Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
-            // Add the request to the RequestQueue.
-            jRequest.setTag("uploadstatistics");
-            nQueue.add(jRequest);
-
-
+                //get status code here
+                final String statusCode = String.valueOf(error.networkResponse.statusCode);
+                //get response body and parse with appropriate encoding
+                try {
+                    Toast.makeText(cContext,
+                            "Fail in: " + new String(error.networkResponse.data, "UTF-8"),
+                            Toast.LENGTH_SHORT).show();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        // Add the request to the RequestQueue.
+        jRequest.setTag("uploadstatistics");
+        nQueue.add(jRequest);
     }
 
-    public void getSyncStatistics(final DatabaseHelper db) {
+    public void getSyncStatistics(final DatabaseHelper db, String key) {
         // Request a string response from the provided URL.
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
-                apiurl + "statistics/" + initialcloudcatalog , null,
+                apiurl + "statistics/" + key + "/", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -185,44 +188,43 @@ public class connectWithServer {
                             mstring = "";
                             e.printStackTrace();
                         }
-
-                        Toast.makeText(cContext,
-                                "Response is: " + mstring,
-                                Toast.LENGTH_SHORT).show();
                         try {
-                            JSONArray dataArray= response.getJSONArray("Statistics");
-                            for(int n = 0; n < dataArray.length(); n++)
-                            {
-                                int curr_hidden=1;
+                            JSONArray dataArray = response.getJSONArray("Statistics");
+                            for (int n = 0; n < dataArray.length(); n++) {
+                                int curr_hidden = 1;
                                 JSONObject object = dataArray.getJSONObject(n);
-                                if (object.getString("hidden").equals("no") ){curr_hidden=0;}
+                                if (object.getString("hidden").equals("no")) {
+                                    curr_hidden = 0;
+                                }
+                                Toast.makeText(cContext,
+                                        "Loading : " +  object.getString("domainurl"),
+                                        Toast.LENGTH_SHORT).show();
 
+                                String curr_domainurl = object.getString("domainurl");
+                                int curr_count = object.getInt("count");
+                                String curr_modified = object.getString("modified");
+                                String curr_sourceactivity = object.getString("sourceactivity");
+                                String curr_category = null;
 
-
-                                String  curr_domainurl    = object.getString("domainurl") ;
-                                int  curr_count  =    object.getInt("count");
-                                String  curr_modified     = object.getString("modified");
-                                String  curr_sourceactivity     = object.getString("sourceactivity") ;
-                                String  curr_category    = null ;
-
-
-
-                                UrlStatistic input =
+                                UrlStatistic input = new UrlStatistic();
+                                input =
                                         new UrlStatistic(
-                                                curr_domainurl ,
+                                                curr_domainurl,
                                                 curr_count,
-                                                curr_modified ,
+                                                curr_modified,
                                                 curr_hidden,
-                                        curr_sourceactivity ,
-                                curr_category );
+                                                curr_sourceactivity,
+                                                curr_category);
 
-try {
-    if (db.updateUrlStatistic(input)<1){db.addToURLStatistics(input);}
-}catch ( Exception e   ){
-        Toast.makeText(cContext,
-                "Fail to update url statistic ",
-                Toast.LENGTH_SHORT).show();
-}
+                                try {
+                                    if (db.updateUrlStatistic(input) < 1) {
+                                        db.createUrlStatistic(input);
+                                    }
+                                } catch (Exception e) {
+                                    Toast.makeText(cContext,
+                                            "Fail to download url statistic ",
+                                            Toast.LENGTH_SHORT).show();
+                                }
 
                             }
                         } catch (JSONException e) {
@@ -252,7 +254,7 @@ try {
             }
         });
         // Add the request to the RequestQueue.
-        stringRequest.setTag("main");
+        stringRequest.setTag("downloadstatistics");
         nQueue.add(stringRequest);
     }
 
@@ -319,8 +321,7 @@ try {
             syncreq.put("app_name", currentUrlAppChecker.app_name);
             syncreq.put("count", currentUrlAppChecker.count);
             syncreq.put("duration", currentUrlAppChecker.duration);
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONObject syncdata = new JSONObject();
