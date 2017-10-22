@@ -46,10 +46,15 @@ public class StatisticsListActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private Switch s;
+<<<<<<< HEAD
     private TextView t,keystringt;
     private ImageButton r,rsync,rsyncdown;
     private Button syncb;
     private LinearLayout keylayout;
+=======
+    private TextView t;
+    private ImageButton r,rsync,rsyncdown;
+>>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
     private int IsInSearchMode;
     private connectWithServer a;
     @Override
@@ -79,7 +84,10 @@ public class StatisticsListActivity extends AppCompatActivity {
         t = (TextView) findViewById(R.id.SearchText);
         keystringt= (TextView) findViewById(R.id.keySyncString);
         r = (ImageButton) findViewById(R.id.refreshButton);
+<<<<<<< HEAD
         keylayout = (LinearLayout) findViewById(R.id.uploadtextgroup);
+=======
+>>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
         rsync = (ImageButton) findViewById(R.id.syncButton);
         rsyncdown = (ImageButton) findViewById(R.id.syncDownButton);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -105,6 +113,7 @@ public class StatisticsListActivity extends AppCompatActivity {
 
             }
         });
+<<<<<<< HEAD
         syncb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +124,8 @@ public class StatisticsListActivity extends AppCompatActivity {
                 }
             }
         });
+=======
+>>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
         t.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -154,8 +165,17 @@ public class StatisticsListActivity extends AppCompatActivity {
             table.addView(createRow(i));
         }
     }
+<<<<<<< HEAD
     void syncData(){keylayout.setVisibility(View.GONE);a.syncStatistics(urlStatistics, (String) keystringt.getText().toString().trim()); }
     void syncDataDown(){keylayout.setVisibility(View.GONE);a.getSyncStatistics(db,(String) keystringt.getText().toString().trim());}
+=======
+    void syncData(){
+        a.syncStatistics(urlStatistics);
+    }
+    void syncDataDown(){
+        a.getSyncStatistics(db);
+    }
+>>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
     private LinearLayout createRow(int i) {
         final LinearLayout row = (LinearLayout) LayoutInflater.from(StatisticsListActivity.this).inflate(R.layout.content_statistics_list, null);
         ((TextView) row.findViewById(R.id.textDomain)).setText(urlStatistics.get(i).domainurl);

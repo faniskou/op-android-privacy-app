@@ -1,5 +1,7 @@
 'use strict';
 var Mockgen = require('../../mockgen.js');
+var errorsmsg = require("../../errorsmessages.js");
+
 /**
  * Operations on /appsIdentity/{group}/{app}
  */
@@ -14,37 +16,26 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}/{app}',
-                operation: 'get',
-                response: '200'
-            }, callback);
-        },
-        400: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}/{app}',
-                operation: 'get',
-                response: '400'
-            }, callback);
-        },
-        404: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}/{app}',
-                operation: 'get',
-                response: '404'
-            }, callback);
+            if (
+                db
+                  .get("appidentity")
+                  .filter({ name: req.params.group , app_name: req.params.app })                  
+                  .size()
+                  .value() == 0
+              ) {
+                res.status(404).send(errorsmsg[404]());
+              } else {
+                try {
+                  var datares ={"AppIdentities": [] };
+                   datares.AppIdentities = db
+                    .get("appidentity")
+                    .filter({ name: req.params.group , app_name: req.params.app })                       
+                    .value();
+                  res.status(200).send(datares);
+                } catch (err) {
+                  res.status(500).send(errorsmsg[500]());
+                }
+              }
         }
     }
 };

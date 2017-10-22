@@ -2,11 +2,15 @@
 
 var Http = require('http');
 var Express = require('express');
+const swaggerUi = require('swagger-ui-express');
 var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
-var swaggerUi = require('swaggerize-ui');
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
 
+const adapter = new FileSync("db.json");
+global.db = low(adapter);
 
 var App = Express();
 
@@ -16,15 +20,13 @@ App.use(BodyParser.json());
 App.use(BodyParser.urlencoded({
     extended: true
 }));
-
+const swaggerDocument = require('./config/swagger.port.json');
+App.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 App.use(Swaggerize({
     api: Path.resolve('./config/swagger.json'),
-    docspath: '/api-docs',
     handlers: Path.resolve('./handlers')
 }));
-App.use('/v1/docs', swaggerUi({
-  docs: '/v1/api-docs' // from the express route above. 
-}));
+
 Server.listen(8000, function () {
     App.swagger.api.host = this.address().address + ':' + this.address().port;
     /* eslint-disable no-console */

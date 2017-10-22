@@ -43,7 +43,7 @@ Test('/statistics/{key}', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .get('/v1' + mock.request.path);
+                    .get('' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);
@@ -92,7 +92,7 @@ Test('/statistics/{key}', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .put('/v1' + mock.request.path);
+                    .put('' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);

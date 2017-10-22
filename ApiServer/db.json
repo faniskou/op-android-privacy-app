@@ -1,0 +1,73 @@
+{
+  "statistics": [
+    {
+      "id": "0c3f0aa9-f8ec-4512-9800-530cac81ae58",
+      "name": "ioanna",
+      "domainurl": "ttttt",
+      "count": 222,
+      "modified": "2001.07.04 AD at 12:08:56 PDT",
+      "sourceactivity": "operando",
+      "hidden": "no",
+      "category": "news",
+      "extrainfo": "{'for initialatation':'yes'}"
+    }
+  ],
+  "appidentity": [
+    {
+      "id": "fd2a166c-e566-4713-b545-2f8d426b18c7",
+      "name": "fanis",
+      "domainurl": "www.enikos.gr",
+      "app_name": "ClashOfClanshGame",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "189de9ef-44b8-41a8-9c8d-b2ccd47fd096",
+      "name": "fanis",
+      "domainurl": "www.enikos.gr",
+      "app_name": "ClashOfClanshGame",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "0a924528-29f0-4a11-bd94-d141d1b2690d",
+      "name": "fanis",
+      "domainurl": "www.enikos.gr",
+      "app_name": "ClashOfClanshGame",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "ab7fe75d-0ef1-4ac1-99e2-ccae7c3473e3",
+      "name": "fanis",
+      "domainurl": "www.enikos.gr",
+      "app_name": "ClashOfClanshGame",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "fbec9128-eb87-402b-b794-9e8299ad64f5",
+      "name": "fanis",
+      "domainurl": "www.enikos.gr",
+      "app_name": "chrome",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "4c6e3f21-b358-4478-89b7-363fd4648155",
+      "name": "fanis2",
+      "domainurl": "www.enikos.gr",
+      "app_name": "chrome",
+      "count": 2,
+      "duration": 21
+    },
+    {
+      "id": "64bb012f-fb5d-4747-b98a-e92d7b8f269d",
+      "name": "fanis",
+      "domainurl": "fanis.gr",
+      "app_name": "fanisapp",
+      "count": 233,
+      "duration": 212
+    }
+  ]
+}

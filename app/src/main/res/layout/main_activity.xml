@@ -150,7 +150,61 @@
                             <!--android:layout_height="wrap_content"-->
                             <!--android:layout_marginTop="10dp"-->
                             <!--android:text="Debug @ Logcat" />-->
+<<<<<<< HEAD
 
+=======
+
+
+                        </LinearLayout>
+                    </ScrollView>
+
+                    <ScrollView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_below="@+id/webView"
+                        android:id="@+id/ResponseAndDomainFiltersScrollView">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="Response &amp; Domain Filter"
+                                android:id="@+id/textView5"
+                                android:gravity="center_vertical|center_horizontal" />
+
+                            <Button
+                                android:id="@+id/responseFiltersButton"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Response Filters" />
+
+                            <Button
+                                android:id="@+id/domainFiltersButton"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Domain Filters" />
+
+                            <Button
+                                android:id="@+id/domainManagerButton"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Domain Manager" />
+
+                            <Button
+                                android:id="@+id/permissionsPerDomainButton"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Permissions Per Domain" />
+>>>>>>> 11607c6745d37ebda5d46f5a8c61da5080d8834a
 
                         </LinearLayout>
                     </ScrollView>

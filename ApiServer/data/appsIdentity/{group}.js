@@ -1,5 +1,7 @@
 'use strict';
 var Mockgen = require('../mockgen.js');
+var errorsmsg = require("../errorsmessages.js");
+var uuid = require('uuid');
 /**
  * Operations on /appsIdentity/{group}
  */
@@ -14,37 +16,26 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}',
-                operation: 'get',
-                response: '200'
-            }, callback);
-        },
-        400: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}',
-                operation: 'get',
-                response: '400'
-            }, callback);
-        },
-        404: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}',
-                operation: 'get',
-                response: '404'
-            }, callback);
+            if (
+                db
+                  .get("appidentity")
+                  .filter({ name: req.params.group })                  
+                  .size()
+                  .value() == 0
+              ) {
+                res.status(404).send(errorsmsg[404]());
+              } else {
+                try {
+                  var datares ={"AppIdentities": [] };
+                   datares.AppIdentities = db
+                    .get("appidentity")
+                    .filter({ name: req.params.group })                       
+                    .value();
+                  res.status(200).send(datares);
+                } catch (err) {
+                  res.status(500).send(errorsmsg[500]());
+                }
+              }
         }
     },
     /**
@@ -57,26 +48,28 @@ module.exports = {
      */
     put: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}',
-                operation: 'put',
-                response: '200'
-            }, callback);
-        },
-        405: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/appsIdentity/{group}',
-                operation: 'put',
-                response: '405'
-            }, callback);
+            req.body.name = req.params.group;
+            req.body.id = uuid.v4();
+      
+            if (
+              db
+                .get("appidentity")
+                .filter({ name: req.body.name, domainurl: req.body.domainurl , app_name: req.body.app_name })
+                .size()
+                .value() > 0
+            ) {
+              res.status(409).send(errorsmsg[409]());
+            } else {
+              try {
+                var datares = db
+                  .get("appidentity")
+                  .push(req.body)
+                  .write();
+                res.status(200).send(errorsmsg[200]());
+              } catch (err) {
+                res.status(500).send(errorsmsg[500]());
+              }
+            }
         }
     }
 };
